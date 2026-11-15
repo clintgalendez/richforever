@@ -45,8 +45,10 @@ New-Zip (Join-Path $stage "framework-dependent") "RichForever-$Version-win-x64-f
 New-Zip (Join-Path $root "companion/assets/discord") "RichForever-discord-assets-$Version.zip"
 
 Remove-Item $stage -Recurse -Force
-Get-ChildItem $dist -Filter *.zip | Sort-Object Name | ForEach-Object {
+$sums = Get-ChildItem $dist -Filter *.zip | Sort-Object Name | ForEach-Object {
     "{0}  {1}" -f (Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant(), $_.Name
-} | Set-Content (Join-Path $dist "SHA256SUMS.txt") -Encoding ascii
+}
+# LF line endings, so `sha256sum -c SHA256SUMS.txt` works on Linux and macOS as well.
+[System.IO.File]::WriteAllText((Join-Path $dist "SHA256SUMS.txt"), (($sums -join "`n") + "`n"))
 
 Get-ChildItem $dist | Format-Table Name, @{ Name = "MB"; Expression = { [math]::Round($_.Length / 1MB, 2) } }
