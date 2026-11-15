@@ -1,0 +1,14 @@
+v=1
+n=Ælfwyn
+l=23
+c=HUNTER
+cn=Hunter
+r=Skyborne
+rn=Skyborne
+f=Alliance
+g=3
+z=Zephras Isle
+sz=Sølvhavn
+m=2521
+it=none
+ss=1763200000
