@@ -31,6 +31,11 @@ WoW Forever client and has had user testing.
 4. Creates build provenance attestations for the ZIPs with `actions/attest`.
 5. Publishes the GitHub release with the CHANGELOG notes.
 
+The asset names are part of the update contract: installed companions look for a `v<semver>` tag
+with `RichForever-<version>-win-x64.zip` or `RichForever-<version>-win-x64-framework-dependent.zip`
+plus `SHA256SUMS.txt`, and expect each ZIP to contain `RichForever.exe` at the top level. Renaming
+them stops existing installs from updating.
+
 Only the final publish job has write permissions (`contents`, `id-token`, `attestations`,
 `artifact-metadata`).
 

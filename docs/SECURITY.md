@@ -16,10 +16,11 @@ WoW client ──(screen pixels, one-way)──► companion ──(local named 
 | Companion → Discord | Leaking more than intended | Only the activity object is sent; privacy settings applied before building it. Text is length-limited. Buttons accept https URLs only. |
 | Discord pipe | A local process pretending to be Discord | Only processes running as the same Windows user can create that pipe; such a process already has the user's rights. Frames are size-limited (64 KB) and parsed as JSON only. |
 | Settings and catalog files | Edited or corrupt files | Parsed with System.Text.Json, invalid values clamped or dropped, corrupt files ignored with a logged warning. Image values must be asset keys or https URLs. |
+| GitHub Releases → companion (updates) | A tampered or malicious update | HTTPS only; the release list comes from `api.github.com` and every download URL must be `https://github.com/…`. Only `v<semver>` tags newer than the running version, never drafts, and prereleases only for prerelease builds. The ZIP must match the SHA-256 in the release's `SHA256SUMS.txt`, must be flat and contain `RichForever.exe`; extraction cannot write outside its folder. Files are replaced in the companion's own folder only, without admin rights, with rollback on failure. Development builds never update. Residual risk: anyone who can publish releases in the repository can ship code, and binaries are not signed yet ([#21](https://github.com/clintgalendez/richforever/issues/21)); turn off *Install updates automatically* to update by hand. |
 | Startup | Persistence | Single `HKCU\…\Run` value pointing at the executable with `--startup`. No services, scheduled tasks, drivers or admin rights. Removed when the setting is turned off or by `--uninstall`. |
 
-There is no network listener, no inbound connection of any kind, and no outbound network traffic
-other than the local Discord pipe.
+There is no network listener and no inbound connection of any kind. The only outbound network
+traffic is the update check and download (HTTPS to GitHub, see above), besides the local Discord pipe.
 
 ## Game safety
 

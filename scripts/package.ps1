@@ -26,11 +26,12 @@ function New-Zip([string]$Source, [string]$Name, [bool]$IncludeFolder = $false) 
 New-Zip (Join-Path $root "addon/RichForever") "RichForever-addon-$Version.zip" $true
 
 # Companion. Single-file without bundle compression: compression would add ~40 MB of private memory.
+# UpdateFlavor names the ZIP each build updates itself from; keep it in sync with the ZIP names below.
 $project = Join-Path $root "companion/src/RichForever.App/RichForever.App.csproj"
 $common = @("-c", "Release", "-r", "win-x64", "-p:DebugType=none", "-p:Version=$Version")
-dotnet publish $project @common --self-contained true -p:IncludeNativeLibrariesForSelfExtract=true -o (Join-Path $stage "self-contained")
+dotnet publish $project @common --self-contained true -p:IncludeNativeLibrariesForSelfExtract=true -p:UpdateFlavor=win-x64 -o (Join-Path $stage "self-contained")
 if ($LASTEXITCODE -ne 0) { throw "self-contained publish failed" }
-dotnet publish $project @common --self-contained false -o (Join-Path $stage "framework-dependent")
+dotnet publish $project @common --self-contained false -p:UpdateFlavor=win-x64-framework-dependent -o (Join-Path $stage "framework-dependent")
 if ($LASTEXITCODE -ne 0) { throw "framework-dependent publish failed" }
 
 foreach ($flavour in "self-contained", "framework-dependent") {

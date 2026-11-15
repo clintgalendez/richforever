@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Microsoft.Win32;
 
 namespace RichForever.App;
@@ -9,6 +10,24 @@ internal static class AppPaths
     public static string Settings => Path.Combine(ConfigDirectory, "settings.json");
     public static string AssetOverride => Path.Combine(ConfigDirectory, "assets.json");
     public static string Log => Path.Combine(LogDirectory, "richforever.log");
+}
+
+internal static class Shell
+{
+    /// <summary>Open a folder or https link with the user's default handler.</summary>
+    public static void Open(string target)
+    {
+        try
+        {
+            // The log folder may not exist yet.
+            Directory.CreateDirectory(AppPaths.LogDirectory);
+            Process.Start(new ProcessStartInfo(target) { UseShellExecute = true })?.Dispose();
+        }
+        catch (Exception e) when (e is System.ComponentModel.Win32Exception or IOException)
+        {
+            Log.Warn($"Could not open {target}: {e.Message}");
+        }
+    }
 }
 
 /// <summary>Small file log: state changes and errors only, capped at 1 MB with one rollover file.</summary>

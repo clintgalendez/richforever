@@ -6,6 +6,15 @@ All notable changes are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+
+- Automatic updates for the companion (#32): it checks GitHub Releases a minute after start and
+  every 6 hours, verifies the download against `SHA256SUMS.txt`, replaces its files and restarts,
+  waiting until WoW Forever closes if you are playing. *Install updates automatically* (on by default)
+  turns it off; tray → *Check for updates…* checks on demand. Prerelease builds also receive
+  prereleases. This is RichForever's first network request of its own; see
+  [docs/PRIVACY.md](docs/PRIVACY.md#update-checks).
+
 ## [0.1.0-beta.2] - 2026-11-16
 
 No Discord setup needed any more.

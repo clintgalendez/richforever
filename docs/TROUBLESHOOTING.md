@@ -38,6 +38,20 @@ and stays visible when the UI is hidden with Alt+Z.
 - Starting RichForever twice shows "already running"; look for the tray icon (it may be in the
   hidden icons area).
 
+## Updates
+
+The **Updates** line in the window's status shows the last check. Common results:
+
+- *Update check failed*: no internet connection or GitHub unreachable; RichForever tries again in
+  6 hours, or use tray icon → **Check for updates…**.
+- *Could not install … access denied*: the companion folder is not writable (for example under
+  `Program Files`). Move the folder to `%LOCALAPPDATA%\Programs\RichForever`, or download the new
+  version from [Releases](https://github.com/clintgalendez/richforever/releases) by hand.
+- *Installed; it takes over when WoW Forever closes*: the new version is in place and starts when you
+  stop playing.
+- Files ending in `.update-old` next to `RichForever.exe` are the previous version; RichForever
+  deletes them a minute after the next start.
+
 ## Still stuck
 
 Open an issue with the companion status, the last lines of the log and the output of `/rfor debug`

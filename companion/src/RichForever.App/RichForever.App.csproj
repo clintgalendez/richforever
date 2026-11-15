@@ -20,6 +20,11 @@
     <NoWarn>$(NoWarn);WFO5001</NoWarn>
   </PropertyGroup>
 
+  <!-- Set by scripts/package.ps1: the release ZIP this build updates itself from. Builds without it never update. -->
+  <ItemGroup Condition="'$(UpdateFlavor)' != ''">
+    <AssemblyMetadata Include="UpdateFlavor" Value="$(UpdateFlavor)" />
+  </ItemGroup>
+
   <ItemGroup>
     <EmbeddedResource Include="richforever.ico" LogicalName="RichForever.App.richforever.ico" />
     <ProjectReference Include="..\RichForever.Core\RichForever.Core.csproj" />

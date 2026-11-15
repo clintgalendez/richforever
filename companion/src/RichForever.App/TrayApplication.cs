@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Reflection;
 using RichForever.Core;
 
@@ -16,14 +15,15 @@ internal sealed class TrayApplication : ApplicationContext
     private readonly ContextMenuStrip _menu = new();
     private readonly ToolStripMenuItem _gameItem = Status(), _discordItem = Status(), _presenceItem = Status(), _pauseItem;
     private MainForm? _window;
+    private Uri? _balloonLink;
     private bool _exiting;
 
-    public TrayApplication(bool startedByWindows)
+    public TrayApplication(bool startedByWindows, bool updated)
     {
         var firstRun = !File.Exists(AppPaths.Settings);
         var settings = AppSettings.Load(AppPaths.Settings, out var warning);
         Log.Verbose = settings.VerboseLogging;
-        Log.Info($"RichForever {Version} starting{(startedByWindows ? " with Windows" : "")}.");
+        Log.Info($"RichForever {Version} starting{(startedByWindows ? " with Windows" : updated ? " after an update" : "")}.");
         if (warning is not null) Log.Warn(warning);
 
         _controller = new CompanionController(settings);
@@ -36,7 +36,8 @@ internal sealed class TrayApplication : ApplicationContext
         menu.Items.Add(new ToolStripMenuItem("Connect to Discord", null, (_, _) => _controller.ConnectDiscordNow()));
         menu.Items.Add(_pauseItem);
         menu.Items.Add(new ToolStripSeparator());
-        menu.Items.Add(new ToolStripMenuItem("Open log folder", null, (_, _) => OpenFolder(AppPaths.LogDirectory)));
+        menu.Items.Add(new ToolStripMenuItem("Check for updates…", null, async (_, _) => await CheckForUpdatesAsync().ConfigureAwait(true)));
+        menu.Items.Add(new ToolStripMenuItem("Open log folder", null, (_, _) => Shell.Open(AppPaths.LogDirectory)));
         menu.Items.Add(new ToolStripMenuItem("Exit", null, async (_, _) => await ExitAsync()));
         menu.Opening += (_, _) => RefreshMenu();
 
@@ -46,9 +47,21 @@ internal sealed class TrayApplication : ApplicationContext
             if (e.Button == MouseButtons.Left) ShowWindow();
         };
 
+        _tray.BalloonTipClicked += (_, _) =>
+        {
+            if (_balloonLink is not null) Shell.Open(_balloonLink.ToString());
+        };
+
         _controller.Changed += RefreshTooltip;
         _controller.ExitRequested += async () => await ExitAsync();
+        _controller.RestartRequested += async () =>
+        {
+            RestartRequested = true;
+            await ExitAsync().ConfigureAwait(true);
+        };
+        _controller.UpdateFailed += update => ShowBalloon($"RichForever {update.Version} is available but could not be installed. Click to download it.", update.Page);
         _controller.Start();
+        if (updated) ShowBalloon($"Updated to RichForever {Version}.", null);
 
         if (firstRun)
         {
@@ -63,6 +76,30 @@ internal sealed class TrayApplication : ApplicationContext
             }
             if (!startedByWindows) ShowWindow();
         }
+    }
+
+    /// <summary>Set when the app exits to start a newly installed version.</summary>
+    public bool RestartRequested { get; private set; }
+
+    private async Task CheckForUpdatesAsync()
+    {
+        var update = await _controller.CheckForUpdateAsync().ConfigureAwait(true);
+        if (update is null)
+        {
+            MessageBox.Show(_controller.UpdateStatus, "RichForever");
+            return;
+        }
+        var question = $"RichForever {update.Version} is available (you have {Version}).{Environment.NewLine}{Environment.NewLine}Install it and restart RichForever now?";
+        if (MessageBox.Show(question, "RichForever", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes) return;
+        if (await _controller.InstallUpdateAsync(update, restartNow: true).ConfigureAwait(true)) return;
+        var failed = $"{_controller.UpdateStatus}{Environment.NewLine}{Environment.NewLine}Open the download page?";
+        if (MessageBox.Show(failed, "RichForever", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes) Shell.Open(update.Page.ToString());
+    }
+
+    private void ShowBalloon(string text, Uri? link)
+    {
+        _balloonLink = link;
+        _tray.ShowBalloonTip(5000, "RichForever", text, ToolTipIcon.Info);
     }
 
     private void ShowWindow()
@@ -119,10 +156,4 @@ internal sealed class TrayApplication : ApplicationContext
     }
 
     private static ToolStripMenuItem Status() => new() { Enabled = false };
-
-    private static void OpenFolder(string path)
-    {
-        Directory.CreateDirectory(path);
-        Process.Start(new ProcessStartInfo(path) { UseShellExecute = true })?.Dispose();
-    }
 }
