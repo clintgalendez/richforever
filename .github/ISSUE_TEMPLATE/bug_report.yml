@@ -1,0 +1,37 @@
+name: Bug report
+description: Something does not work as expected
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What did you expect, and what happened instead?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+    validations:
+      required: true
+  - type: input
+    id: versions
+    attributes:
+      label: Versions
+      description: RichForever companion and addon versions, WoW Forever build (shown on the login screen)
+    validations:
+      required: true
+  - type: textarea
+    id: status
+    attributes:
+      label: Companion status and log
+      description: |
+        Copy the Status section of the RichForever window and the last lines of
+        %LOCALAPPDATA%\RichForever\richforever.log. Remove anything you consider private.
+      render: text
+  - type: textarea
+    id: addon
+    attributes:
+      label: Output of /rfor debug
+      render: text

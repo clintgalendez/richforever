@@ -1,0 +1,16 @@
+# Build output
+bin/
+obj/
+artifacts/
+dist/
+*.user
+.vs/
+.idea/
+TestResults/
+
+# Python
+__pycache__/
+
+# Local settings and logs are never committed
+settings.json
+*.log
