@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>RichForever.Core</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="..\..\assets\catalog.json" LogicalName="RichForever.Core.catalog.json" />
+    <InternalsVisibleTo Include="RichForever.Tests" />
+  </ItemGroup>
+
+</Project>
