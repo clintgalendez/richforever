@@ -1,0 +1,17 @@
+v=1
+n=Archer
+l=60
+c=PALADIN
+cn=Paladin
+r=Human
+rn=Human
+f=Alliance
+g=2
+z=Warsong Gulch
+m=1460
+it=pvp
+in=Warsong Gulch
+ii=489
+mp=10
+gs=10
+ss=1763200000
