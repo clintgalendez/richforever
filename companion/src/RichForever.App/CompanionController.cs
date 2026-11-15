@@ -130,53 +130,40 @@ internal sealed class CompanionController : IAsyncDisposable
         Push();
     }
 
-    /// <summary>Ask GitHub for a newer release. Null when up to date, busy or failed; see <see cref="UpdateStatus"/>.</summary>
-    public async Task<AvailableUpdate?> CheckForUpdateAsync()
-    {
-        if (!Updater.Supported || _updateBusy || _restartPending) return null;
-        _updateBusy = true;
-        SetUpdateStatus("Checking for updates…");
-        try
-        {
-            var update = await Updater.CheckAsync(_updateCancel.Token).ConfigureAwait(true);
-            SetUpdateStatus(update is null ? $"Up to date (checked {DateTime.Now:t})" : $"RichForever {update.Version} is available");
-            return update;
-        }
-        catch (Exception e) when (IsUpdateError(e))
-        {
-            SetUpdateStatus($"Update check failed: {e.Message}");
-            return null;
-        }
-        finally
-        {
-            _updateBusy = false;
-        }
-    }
-
     /// <summary>
-    /// Download, verify and put the new files in place, then restart: now if asked or the game is not
-    /// running, otherwise when the game closes. False if it could not be installed.
+    /// Ask GitHub for a newer release and, if <paramref name="confirm"/> agrees, download, verify and
+    /// install it, then restart: now if <paramref name="restartNow"/> or the game is not running,
+    /// otherwise when the game closes. One update at a time, the confirmation included. False when
+    /// nothing was installed; <see cref="UpdateStatus"/> says why.
     /// </summary>
-    public async Task<bool> InstallUpdateAsync(AvailableUpdate update, bool restartNow)
+    public async Task<bool> UpdateAsync(Func<AvailableUpdate, bool> confirm, bool restartNow)
     {
-        if (_updateBusy || _restartPending) return false;
+        if (!Updater.Supported || _updateBusy || _restartPending) return false;
         _updateBusy = true;
-        SetUpdateStatus($"Installing RichForever {update.Version}…");
+        var failure = "Update check failed";
+        AvailableUpdate update;
         try
         {
+            SetUpdateStatus("Checking for updates…");
+            var found = await Updater.CheckAsync(_updateCancel.Token).ConfigureAwait(true);
+            SetUpdateStatus(found is null ? $"Up to date (checked {DateTime.Now:t})" : $"RichForever {found.Version} is available");
+            if (found is null || !confirm(found)) return false;
+            update = found;
+            failure = $"Could not install RichForever {update.Version}";
+            SetUpdateStatus($"Installing RichForever {update.Version}…");
             _updateWork = Updater.InstallAsync(update, Updater.Executable, _updateCancel.Token);
             await _updateWork.ConfigureAwait(true);
+            _restartPending = true;
         }
         catch (Exception e) when (IsUpdateError(e))
         {
-            SetUpdateStatus($"Could not install RichForever {update.Version}: {e.Message}");
+            SetUpdateStatus($"{failure}: {e.Message}");
             return false;
         }
         finally
         {
             _updateBusy = false;
         }
-        _restartPending = true;
         if (restartNow || !_engine.GameRunning)
         {
             SetUpdateStatus($"RichForever {update.Version} installed; restarting");
@@ -184,7 +171,9 @@ internal sealed class CompanionController : IAsyncDisposable
         }
         else
         {
-            SetUpdateStatus($"RichForever {update.Version} installed; it takes over when WoW Forever closes");
+            SetUpdateStatus(Settings.ExitWhenGameCloses
+                ? $"RichForever {update.Version} installed; it starts the next time you open RichForever"
+                : $"RichForever {update.Version} installed; it takes over when WoW Forever closes");
         }
         return true;
     }
@@ -271,12 +260,20 @@ internal sealed class CompanionController : IAsyncDisposable
     private async Task AutoUpdateAsync()
     {
         _updateTimer.Interval = UpdateCheckIntervalMs;
+        // A user-started update may be in progress (or waiting for an answer); leave its files alone.
+        if (_updateBusy) return;
         Updater.CleanUp();
-        if (!Settings.AutoUpdate || await CheckForUpdateAsync().ConfigureAwait(true) is not { } update) return;
-        if (!await InstallUpdateAsync(update, restartNow: false).ConfigureAwait(true) && _notifiedVersion != update.Version)
+        if (!Settings.AutoUpdate) return;
+        AvailableUpdate? found = null;
+        var installed = await UpdateAsync(update =>
         {
-            _notifiedVersion = update.Version;
-            UpdateFailed?.Invoke(update);
+            found = update;
+            return true;
+        }, restartNow: false).ConfigureAwait(true);
+        if (!installed && found is not null && _notifiedVersion != found.Version)
+        {
+            _notifiedVersion = found.Version;
+            UpdateFailed?.Invoke(found);
         }
     }
 
@@ -289,7 +286,7 @@ internal sealed class CompanionController : IAsyncDisposable
 
     private static bool IsUpdateError(Exception e) =>
         e is HttpRequestException or OperationCanceledException or JsonException or KeyNotFoundException
-            or InvalidOperationException or IOException or UnauthorizedAccessException;
+            or InvalidOperationException or IOException or InvalidDataException or UnauthorizedAccessException;
 
     private void Push()
     {

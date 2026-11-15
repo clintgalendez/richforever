@@ -16,6 +16,7 @@ namespace RichForever.App;
 internal static class Updater
 {
     public const string OldSuffix = ".update-old";
+    public const string NewSuffix = ".update-new";
     private const string ReleasesUrl = "https://api.github.com/repos/clintgalendez/richforever/releases?per_page=30";
     private const string PackagedExecutable = "RichForever.exe";
 
@@ -70,23 +71,29 @@ internal static class Updater
     }
 
     /// <summary>
-    /// Move every file from <paramref name="source"/> into <paramref name="target"/>, renaming files
-    /// it replaces to *.update-old. RichForever.exe goes to <paramref name="executableName"/>, in case
-    /// the user renamed it. On any failure the original files are put back.
+    /// Put every file from <paramref name="source"/> into <paramref name="target"/>, renaming files it
+    /// replaces to *.update-old. RichForever.exe goes to <paramref name="executableName"/>, in case the
+    /// user renamed it. The files are first copied in as *.update-new, so a full disk or a read-only
+    /// folder fails before anything is replaced; the swap itself is renames within one folder, and any
+    /// failure there puts the original files back.
     /// </summary>
     internal static void Apply(string source, string target, string executableName)
     {
+        var destinations = Directory.GetFiles(source).Select(file =>
+        {
+            var name = Path.GetFileName(file);
+            return (File: file, Destination: Path.Combine(target, name.Equals(PackagedExecutable, StringComparison.OrdinalIgnoreCase) ? executableName : name));
+        }).ToList();
         var placed = new List<(string Path, bool Replaced)>();
         try
         {
-            foreach (var file in Directory.GetFiles(source))
+            foreach (var (file, destination) in destinations) File.Copy(file, destination + NewSuffix, overwrite: true);
+            foreach (var (_, destination) in destinations)
             {
-                var name = Path.GetFileName(file);
-                var destination = Path.Combine(target, name.Equals(PackagedExecutable, StringComparison.OrdinalIgnoreCase) ? executableName : name);
                 var replaced = File.Exists(destination);
                 if (replaced) File.Move(destination, destination + OldSuffix, overwrite: true);
                 placed.Add((destination, replaced));
-                File.Move(file, destination);
+                File.Move(destination + NewSuffix, destination);
             }
         }
         catch
@@ -105,6 +112,10 @@ internal static class Updater
             }
             throw;
         }
+        finally
+        {
+            foreach (var (_, destination) in destinations) TryDelete(destination + NewSuffix);
+        }
     }
 
     /// <summary>Delete what an earlier update left behind. Files still in use stay for next time.</summary>
@@ -113,7 +124,13 @@ internal static class Updater
         if (!Supported) return;
         try
         {
-            foreach (var old in Directory.GetFiles(Path.GetDirectoryName(Executable)!, "*" + OldSuffix)) File.Delete(old);
+            var folder = Path.GetDirectoryName(Executable)!;
+            foreach (var old in Directory.GetFiles(folder, "*" + OldSuffix))
+            {
+                // Never delete the only copy, should a failed update have lost the current file.
+                if (File.Exists(old[..^OldSuffix.Length])) File.Delete(old);
+            }
+            foreach (var partial in Directory.GetFiles(folder, "*" + NewSuffix)) File.Delete(partial);
             if (Directory.Exists(Staging)) Directory.Delete(Staging, recursive: true);
         }
         catch (Exception e) when (e is IOException or UnauthorizedAccessException)
@@ -132,6 +149,18 @@ internal static class Updater
         catch (System.ComponentModel.Win32Exception e)
         {
             Log.Error($"Could not restart {Executable}: {e.Message}");
+        }
+    }
+
+    private static void TryDelete(string path)
+    {
+        try
+        {
+            File.Delete(path);
+        }
+        catch (Exception e) when (e is IOException or UnauthorizedAccessException)
+        {
+            Log.Debug($"Could not delete {path}: {e.Message}");
         }
     }
 

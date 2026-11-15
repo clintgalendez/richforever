@@ -56,6 +56,8 @@ internal sealed class TrayApplication : ApplicationContext
         _controller.ExitRequested += async () => await ExitAsync();
         _controller.RestartRequested += async () =>
         {
+            // An install that finishes while the user exits must not start the app again.
+            if (_exiting) return;
             RestartRequested = true;
             await ExitAsync().ConfigureAwait(true);
         };
@@ -83,17 +85,23 @@ internal sealed class TrayApplication : ApplicationContext
 
     private async Task CheckForUpdatesAsync()
     {
-        var update = await _controller.CheckForUpdateAsync().ConfigureAwait(true);
-        if (update is null)
+        AvailableUpdate? offered = null;
+        var accepted = false;
+        var installed = await _controller.UpdateAsync(update =>
         {
+            offered = update;
+            var question = $"RichForever {update.Version} is available (you have {Version}).{Environment.NewLine}{Environment.NewLine}Install it and restart RichForever now?";
+            return accepted = MessageBox.Show(question, "RichForever", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
+        }, restartNow: true).ConfigureAwait(true);
+        if (installed || (offered is not null && !accepted)) return;
+        if (offered is null)
+        {
+            // Up to date, check failed, busy, or already installed: the status says which.
             MessageBox.Show(_controller.UpdateStatus, "RichForever");
             return;
         }
-        var question = $"RichForever {update.Version} is available (you have {Version}).{Environment.NewLine}{Environment.NewLine}Install it and restart RichForever now?";
-        if (MessageBox.Show(question, "RichForever", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes) return;
-        if (await _controller.InstallUpdateAsync(update, restartNow: true).ConfigureAwait(true)) return;
         var failed = $"{_controller.UpdateStatus}{Environment.NewLine}{Environment.NewLine}Open the download page?";
-        if (MessageBox.Show(failed, "RichForever", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes) Shell.Open(update.Page.ToString());
+        if (MessageBox.Show(failed, "RichForever", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes) Shell.Open(offered.Page.ToString());
     }
 
     private void ShowBalloon(string text, Uri? link)

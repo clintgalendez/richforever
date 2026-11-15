@@ -108,7 +108,7 @@ public class UpdateTests : IDisposable
         Assert.Equal("user file", File.ReadAllText(Path.Combine(app, "notes.txt")));
         Assert.Equal("old exe", File.ReadAllText(Path.Combine(app, "My RichForever.exe" + Updater.OldSuffix)));
         Assert.False(File.Exists(Path.Combine(app, "RichForever.exe")));
-        Assert.Empty(Directory.GetFiles(package));
+        Assert.Empty(Directory.GetFiles(app, "*" + Updater.NewSuffix));
     }
 
     [Fact]
@@ -126,6 +126,23 @@ public class UpdateTests : IDisposable
         Assert.Equal("old license", File.ReadAllText(Path.Combine(app, "LICENSE")));
         Assert.False(File.Exists(Path.Combine(app, "README.txt")));
         Assert.False(File.Exists(Path.Combine(app, "LICENSE" + Updater.OldSuffix)));
+        Assert.Empty(Directory.GetFiles(app, "*" + Updater.NewSuffix));
+    }
+
+    [Fact]
+    public void Apply_touches_nothing_when_the_new_files_cannot_be_copied_in()
+    {
+        var app = Folder("app", ("RichForever.exe", "old exe"), ("LICENSE", "old license"));
+        var package = Folder("package", ("RichForever.exe", "new exe"), ("LICENSE", "new license"));
+        // A folder where RichForever.exe.update-new should go makes the copy fail.
+        Directory.CreateDirectory(Path.Combine(app, "RichForever.exe" + Updater.NewSuffix));
+
+        Assert.ThrowsAny<Exception>(() => Updater.Apply(package, app, "RichForever.exe"));
+
+        Assert.Equal("old exe", File.ReadAllText(Path.Combine(app, "RichForever.exe")));
+        Assert.Equal("old license", File.ReadAllText(Path.Combine(app, "LICENSE")));
+        Assert.Empty(Directory.GetFiles(app, "*" + Updater.OldSuffix));
+        Assert.False(File.Exists(Path.Combine(app, "LICENSE" + Updater.NewSuffix)));
     }
 
     [Fact]
