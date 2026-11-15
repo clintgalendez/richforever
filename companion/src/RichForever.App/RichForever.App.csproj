@@ -13,6 +13,7 @@
     <ConcurrentGarbageCollection>false</ConcurrentGarbageCollection>
     <TieredPGO>true</TieredPGO>
     <UseSystemResourceKeys>true</UseSystemResourceKeys>
+    <PublishSingleFile>true</PublishSingleFile>
     <!-- Application.SetColorMode is marked experimental. -->
     <NoWarn>$(NoWarn);WFO5001</NoWarn>
   </PropertyGroup>

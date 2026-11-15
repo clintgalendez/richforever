@@ -27,7 +27,7 @@ New-Zip (Join-Path $root "addon/RichForever") "RichForever-addon-$Version.zip" $
 
 # Companion. Single-file without bundle compression: compression would add ~40 MB of private memory.
 $project = Join-Path $root "companion/src/RichForever.App/RichForever.App.csproj"
-$common = @("-c", "Release", "-r", "win-x64", "-p:PublishSingleFile=true", "-p:DebugType=none", "-p:Version=$Version")
+$common = @("-c", "Release", "-r", "win-x64", "-p:DebugType=none", "-p:Version=$Version")
 dotnet publish $project @common --self-contained true -p:IncludeNativeLibrariesForSelfExtract=true -o (Join-Path $stage "self-contained")
 if ($LASTEXITCODE -ne 0) { throw "self-contained publish failed" }
 dotnet publish $project @common --self-contained false -o (Join-Path $stage "framework-dependent")

@@ -96,12 +96,13 @@
       "RichForever": {
         "type": "Project",
         "dependencies": {
-          "RichForever.Core": "[0.1.0, )"
+          "RichForever.Core": "[0.1.0-beta.1, )"
         }
       },
       "richforever.core": {
         "type": "Project"
       }
-    }
+    },
+    "net10.0-windows7.0/win-x64": {}
   }
 }
