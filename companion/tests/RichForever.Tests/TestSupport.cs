@@ -15,7 +15,7 @@ internal static class Fixture
     public static byte[] Bgra(string name)
     {
         var data = File.ReadAllBytes(Path.Combine(Directory, name + ".ppm"));
-        var header = Encoding.ASCII.GetString(data, 0, 32).Split((char[])['\n', ' '], 5);
+        var header = Encoding.ASCII.GetString(data, 0, 32).Split(['\n', ' '], 5);
         Assert.Equal("P6", header[0]);
         Assert.Equal(StripDecoder.Width, int.Parse(header[1], System.Globalization.CultureInfo.InvariantCulture));
         Assert.Equal(StripDecoder.Height, int.Parse(header[2], System.Globalization.CultureInfo.InvariantCulture));

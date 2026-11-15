@@ -13,6 +13,7 @@ internal sealed class TrayApplication : ApplicationContext
 
     private readonly CompanionController _controller;
     private readonly NotifyIcon _tray;
+    private readonly ContextMenuStrip _menu = new();
     private readonly ToolStripMenuItem _gameItem = Status(), _discordItem = Status(), _presenceItem = Status(), _pauseItem;
     private MainForm? _window;
     private bool _exiting;
@@ -27,7 +28,7 @@ internal sealed class TrayApplication : ApplicationContext
         _controller = new CompanionController(settings);
         _pauseItem = new ToolStripMenuItem("Pause presence", null, (_, _) => _controller.SetPaused(!_controller.Settings.PausePresence));
 
-        var menu = new ContextMenuStrip();
+        var menu = _menu;
         menu.Items.Add(new ToolStripMenuItem($"RichForever {Version}") { Enabled = false, Font = new Font(menu.Font, FontStyle.Bold) });
         menu.Items.AddRange([_gameItem, _discordItem, _presenceItem, new ToolStripSeparator()]);
         menu.Items.Add(new ToolStripMenuItem("Open RichForever…", null, (_, _) => ShowWindow()) { Font = new Font(menu.Font, FontStyle.Bold) });
@@ -90,6 +91,7 @@ internal sealed class TrayApplication : ApplicationContext
         _tray.Visible = false;
         await _controller.DisposeAsync();
         _tray.Dispose();
+        _menu.Dispose();
         ExitThread();
     }
 
@@ -98,6 +100,7 @@ internal sealed class TrayApplication : ApplicationContext
         if (disposing && !_exiting)
         {
             _tray.Dispose();
+            _menu.Dispose();
         }
         base.Dispose(disposing);
     }

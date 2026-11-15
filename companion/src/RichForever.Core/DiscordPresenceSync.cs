@@ -188,6 +188,10 @@ public sealed class DiscordPresenceSync : IAsyncDisposable
                 }
             }
         }
+        catch (Exception) when (token.IsCancellationRequested)
+        {
+            // Shutting down: whatever was in flight (a connect attempt, a send) no longer matters.
+        }
         finally
         {
             await DisconnectAsync(clear: true).ConfigureAwait(false);
