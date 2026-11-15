@@ -150,7 +150,7 @@ public class DiscordPresenceSyncTests
 
         sync.Update(null, true, new Activity { State = "A" });
 
-        await Wait.For(() => sync.State.Message == "No Discord application ID set");
+        await Wait.For(() => sync.State.Message == "The Discord application ID in settings is not valid");
         Assert.Equal(0, discord.Handshakes);
     }
 

@@ -26,8 +26,8 @@ Inside Stratholme  (3 of 5)
 
 > **Project status: beta (0.1.0-beta.1).** The companion, the protocol and the Discord integration are
 > implemented and tested on Windows, and the full pipeline has been run on a real screen against the
-> real Discord client. The addon has **not yet been run inside the live WoW Forever client**; that
-> check is the next milestone. See [Known limitations](#known-limitations).
+> real Discord client, which displays the presence with the bundled artwork. The addon has **not yet
+> been run inside the live WoW Forever client**; that check is the next milestone. See [Known limitations](#known-limitations).
 
 ## Features
 
@@ -71,7 +71,8 @@ never sends input to the game. Details: [docs/ARCHITECTURE.md](docs/ARCHITECTURE
 - Windows 10 or 11, 64-bit.
 - World of Warcraft: Forever, in **windowed** or **windowed (fullscreen)** mode.
 - The Discord desktop app, with *Settings → Activity Privacy → Share your detected activities* on.
-- A Discord application ID (free, two minutes: [docs/DISCORD_SETUP.md](docs/DISCORD_SETUP.md)).
+- Nothing else: RichForever ships with its own Discord application ("World of Warcraft Forever") and
+  artwork. Using your own application is optional ([docs/DISCORD_SETUP.md](docs/DISCORD_SETUP.md)).
 
 ## Installation
 
@@ -85,8 +86,7 @@ Full guide: [docs/INSTALLATION.md](docs/INSTALLATION.md). In short:
 3. Extract the companion anywhere (for example `%LOCALAPPDATA%\Programs\RichForever`) and run
    `RichForever.exe`. Windows SmartScreen may warn because the build is not code-signed yet; choose
    *More info → Run anyway* if you trust the download (verify it with `SHA256SUMS.txt`).
-4. Paste your Discord application ID in the window that opens and click **Save**.
-5. Start WoW Forever and log in. Your Discord profile updates within a few seconds.
+4. Start WoW Forever and log in. Your Discord profile updates within a few seconds.
 
 ## Using it
 
@@ -127,8 +127,7 @@ Measured on Windows 11 (16 logical cores), release build, see [docs/PERFORMANCE.
 ## Troubleshooting
 
 See [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md). The most common causes: the game is in
-exclusive fullscreen, something covers the top-left corner of the game, the Discord application ID is
-missing, or Discord's activity sharing is off.
+exclusive fullscreen, something covers the top-left corner of the game, Discord is not running, or Discord's activity sharing is off.
 
 ## Known limitations
 
@@ -140,8 +139,6 @@ missing, or Discord's activity sharing is off.
 - Zone and instance artwork uses classic-era map and instance IDs, plus names as a fallback; only the
   map IDs of the open-world zones were confirmed for Forever.
 - Session time is time since login on this character; lifetime `/played` is not shown.
-- Discord shows "Playing <your application name>", so name your Discord application
-  "World of Warcraft Forever".
 
 ## Development
 

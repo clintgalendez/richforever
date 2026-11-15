@@ -18,6 +18,10 @@ public sealed record PresenceButton(string Label, string Url);
 /// <summary>User preferences, stored as JSON in %APPDATA%\RichForever\settings.json.</summary>
 public sealed partial class AppSettings
 {
+    /// <summary>RichForever's own Discord application ("World of Warcraft Forever"), with all artwork uploaded.</summary>
+    public const string DefaultApplicationId = "1571656707078103191";
+
+    /// <summary>A custom Discord application ID; empty means <see cref="DefaultApplicationId"/>.</summary>
     public string DiscordApplicationId { get; set; } = "";
 
     // Privacy
@@ -59,7 +63,9 @@ public sealed partial class AppSettings
     [GeneratedRegex("^[A-Za-z0-9_.-]{1,64}$")]
     private static partial Regex ProcessNamePattern();
 
-    public bool HasValidApplicationId => ApplicationIdPattern().IsMatch(DiscordApplicationId);
+    public string EffectiveApplicationId => DiscordApplicationId.Length == 0 ? DefaultApplicationId : DiscordApplicationId;
+
+    public bool HasValidApplicationId => ApplicationIdPattern().IsMatch(EffectiveApplicationId);
 
     /// <summary>Load settings. A missing file gives defaults; an unreadable one gives defaults and a warning.</summary>
     public static AppSettings Load(string path, out string? warning)

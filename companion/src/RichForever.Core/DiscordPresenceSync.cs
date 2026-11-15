@@ -105,7 +105,7 @@ public sealed class DiscordPresenceSync : IAsyncDisposable
                 if (!desired.Connect || string.IsNullOrEmpty(desired.ClientId))
                 {
                     await DisconnectAsync(clear: true).ConfigureAwait(false);
-                    SetState(new(DiscordStatus.Off, string.IsNullOrEmpty(desired.ClientId) && desired.Connect ? "No Discord application ID set" : "Not connected"));
+                    SetState(new(DiscordStatus.Off, string.IsNullOrEmpty(desired.ClientId) && desired.Connect ? "The Discord application ID in settings is not valid" : "Not connected"));
                     await WaitAsync(Timeout.InfiniteTimeSpan, token).ConfigureAwait(false);
                     continue;
                 }

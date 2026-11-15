@@ -181,7 +181,7 @@ internal sealed class CompanionController : IAsyncDisposable
         var activity = _engine.DesiredActivity(Settings, Catalog, DateTimeOffset.UtcNow);
         if (activity?.ToJson() != CurrentActivity?.ToJson()) Log.Debug($"Presence: {activity?.ToJson() ?? "cleared"}");
         CurrentActivity = activity;
-        var appId = Settings.HasValidApplicationId ? Settings.DiscordApplicationId : null;
+        var appId = Settings.HasValidApplicationId ? Settings.EffectiveApplicationId : null;
         _discord.Update(appId, _connectNow || _engine.WantsDiscord(Settings), CurrentActivity);
         Changed?.Invoke();
     }

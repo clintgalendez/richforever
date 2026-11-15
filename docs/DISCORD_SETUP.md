@@ -3,16 +3,24 @@
 Discord shows Rich Presence on behalf of a Discord *application*. The application's name is what
 appears after "Playing", and its uploaded images are what RichForever's asset keys refer to.
 
-RichForever needs only the application's public **Application ID**. It never asks for your Discord
-password or token, it does not use OAuth, and it does not need a bot.
+**You do not need to do anything here.** RichForever uses its own application,
+**World of Warcraft Forever** (`1571656707078103191`), which has all of RichForever's artwork
+uploaded. Leave the *Discord app* field in the RichForever window empty to use it.
 
-## Create the application
+RichForever only ever uses an application's public **Application ID**. It never asks for your
+Discord password or token, it does not use OAuth, and it does not need a bot.
+
+The rest of this page is for people who want their own application, for example a different name
+after "Playing" or their own artwork, and for maintainers of the default application.
+
+## Create your own application
 
 1. Open the [Discord Developer Portal](https://discord.com/developers/applications) and sign in.
-2. Click **New Application**. Name it **World of Warcraft Forever** (this becomes
-   "Playing World of Warcraft Forever"). Accept the terms and create it.
+2. Click **New Application** and name it; the name becomes "Playing <name>". Accept the terms and
+   create it.
 3. On **General Information**, copy the **Application ID** (a 17–20 digit number).
-4. Paste it into the RichForever window (**Discord app ID**) and click **Save**.
+4. Paste it into the RichForever window (**Discord app**) and click **Save**. Clear the field to go
+   back to RichForever's application.
 
 That is enough for text presence. Images need one more step.
 

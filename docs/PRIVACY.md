@@ -27,7 +27,9 @@ encodes the same information that the presence shows, in a form that is easy to 
 
 - No telemetry, analytics, crash reporting or update checks.
 - No network requests of RichForever's own. No servers, no accounts.
-- No Discord password, token or OAuth login; only the public application ID is used.
+- No Discord password, token or OAuth login; only a public application ID is used. The presence is
+  published under RichForever's Discord application, which only determines the name and artwork Discord
+  displays; the application owner receives no data from it.
 - No reading of game memory, other windows (the companion reads the game's corner only when the game
   window is the topmost window there) or files outside its own settings and log.
 - Local file paths and process details are never sent to Discord.

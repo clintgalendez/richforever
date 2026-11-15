@@ -11,7 +11,7 @@ internal sealed class MainForm : Form
 
     private readonly CompanionController _controller;
     private readonly Label _game = Value(), _discord = Value(), _character = Value(), _presence = Value(), _error = Value(), _performance = Value();
-    private readonly TextBox _applicationId = new() { Width = 220 };
+    private readonly TextBox _applicationId = new() { Width = 220, PlaceholderText = "RichForever (default)" };
     private readonly CheckBox _pause = Check("Pause presence"), _hideName = Check("Hide character name"), _hideTime = Check("Hide session time"),
         _hideZone = Check("Hide zone and map"), _hideInstance = Check("Hide dungeon and raid details"), _stats = Check("Show health, power and XP (also enable in the addon)"),
         _group = Check("Show group size"), _combat = Check("Show when in combat"), _startup = Check("Start RichForever when Windows starts"),
@@ -44,12 +44,12 @@ internal sealed class MainForm : Form
         AddRow(status, "Performance", _performance);
 
         var idRow = new FlowLayoutPanel { AutoSize = true, WrapContents = false, Margin = Padding.Empty };
-        var guide = new LinkLabel { Text = "How do I get one?", AutoSize = true, Margin = new Padding(8, 6, 0, 0) };
+        var guide = new LinkLabel { Text = "Use your own Discord app (optional)", AutoSize = true, Margin = new Padding(8, 6, 0, 0) };
         guide.LinkClicked += (_, _) => Open(SetupGuide);
         idRow.Controls.AddRange([_applicationId, guide]);
 
         var settings = Table();
-        AddRow(settings, "Discord app ID", idRow);
+        AddRow(settings, "Discord app", idRow);
         AddRow(settings, "Privacy", Stack(_pause, _hideName, _hideTime, _hideZone, _hideInstance));
         AddRow(settings, "Show", Stack(_stats, _group, _combat));
         AddRow(settings, "Startup", Stack(_startup, _whenGame, _always, _exit));
@@ -111,7 +111,7 @@ internal sealed class MainForm : Form
         s.DiscordApplicationId = _applicationId.Text.Trim();
         if (s.DiscordApplicationId.Length > 0 && !s.HasValidApplicationId)
         {
-            MessageBox.Show(this, "The Discord application ID is the 17-20 digit number on the General Information page of your Discord application.",
+            MessageBox.Show(this, "Leave the field empty to use RichForever's Discord application, or enter the 17-20 digit Application ID from the General Information page of your own Discord application.",
                 "RichForever", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             return;
         }

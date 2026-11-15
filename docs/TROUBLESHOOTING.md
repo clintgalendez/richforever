@@ -23,9 +23,9 @@ and stays visible when the UI is hidden with Alt+Z.
 
 | Status shows | Cause and fix |
 | --- | --- |
-| No Discord application ID set | Paste your ID in the window and save ([DISCORD_SETUP.md](DISCORD_SETUP.md)). |
+| The Discord application ID in settings is not valid | Clear the *Discord app* field in the window to use RichForever's application, or enter a valid ID ([DISCORD_SETUP.md](DISCORD_SETUP.md)). |
 | Discord is not running (no discord-ipc pipe found) | Start the Discord desktop app. The browser version cannot show Rich Presence. Discord and RichForever must run as the same Windows user, and neither "as administrator". |
-| Discord rejected the application ID | The ID is wrong or the application was deleted. Copy it again from the developer portal. |
+| Discord rejected the application ID | Only possible with a custom ID: it is wrong or the application was deleted. Clear the field to use the default. |
 | Discord did not answer | Discord is busy or updating. RichForever retries automatically. |
 | Connected, but nothing on my profile | Turn on *User Settings → Activity Privacy → Share your detected activities with others*. Check that the status line says *Presence:* something and is not paused. Discord updates presence at most every few seconds. |
 | Text shows but no images | Assets not uploaded yet, uploaded under different names, or still propagating (can take minutes). |
