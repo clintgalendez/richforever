@@ -3,7 +3,7 @@
   Builds the release assets into dist/: addon ZIP, companion ZIPs, Discord art ZIP, SHA256SUMS.txt.
 
 .EXAMPLE
-  pwsh ./scripts/package.ps1 -Version 0.1.0-beta.1
+  pwsh ./scripts/package.ps1 -Version 0.1.0-beta.2
 #>
 param(
     [Parameter(Mandatory)][ValidatePattern('^\d+\.\d+\.\d+(-[0-9A-Za-z.-]+)?$')][string]$Version,
