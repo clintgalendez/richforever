@@ -57,6 +57,10 @@ jobs:
       - name: Package
         shell: pwsh
         run: ./scripts/package.ps1 -Version $env:VERSION
+      - name: Checksums verify with sha256sum
+        shell: bash
+        working-directory: dist
+        run: sha256sum -c SHA256SUMS.txt
       - name: Release notes from CHANGELOG.md
         shell: pwsh
         run: |

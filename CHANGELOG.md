@@ -6,6 +6,10 @@ All notable changes are documented here. The format follows
 
 ## [Unreleased]
 
+### Fixed
+
+- `SHA256SUMS.txt` is written with LF line endings so `sha256sum -c` works (#28).
+
 ## [0.1.0-beta.1] - 2026-11-15
 
 First public beta. The companion and protocol are tested on Windows and against the real Discord
