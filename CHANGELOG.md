@@ -6,6 +6,10 @@ All notable changes are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.1.0-beta.2] - 2026-11-16
+
+No Discord setup needed any more.
+
 ### Changed
 
 - RichForever now uses its own Discord application, "World of Warcraft Forever"
@@ -43,5 +47,6 @@ client; the addon still needs verification in the live WoW Forever client.
   review), CodeQL, Dependabot, and a tag-driven release workflow with checksums and provenance
   attestations.
 
-[Unreleased]: https://github.com/clintgalendez/richforever/compare/v0.1.0-beta.1...HEAD
+[Unreleased]: https://github.com/clintgalendez/richforever/compare/v0.1.0-beta.2...HEAD
+[0.1.0-beta.2]: https://github.com/clintgalendez/richforever/compare/v0.1.0-beta.1...v0.1.0-beta.2
 [0.1.0-beta.1]: https://github.com/clintgalendez/richforever/releases/tag/v0.1.0-beta.1
