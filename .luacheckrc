@@ -20,6 +20,8 @@ files["addon/RichForever"] = {
 -- The test mock defines the WoW API as globals on purpose.
 files["addon/tests"] = {
 	allow_defined_top = true,
+	ignore = { "212/self" }, -- mock methods mirror the WoW API signatures
+
 	globals = { "RichForeverDB", "RichForeverCharDB", "SlashCmdList", "Settings", "UnitRace", "UnitIsAFK", "print", "time" },
 	read_globals = { "RichForever_OnCompartmentClick" },
 }
