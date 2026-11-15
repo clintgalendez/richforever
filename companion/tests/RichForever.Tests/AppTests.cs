@@ -126,6 +126,7 @@ public class StartupRegistrationTests : IDisposable
     }
 }
 
+[Collection(DesktopTests.Name)]
 public class GameWatcherTests
 {
     private static readonly string Self = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
@@ -169,6 +170,7 @@ public class GameWatcherTests
 }
 
 /// <summary>Draws a real strip on screen and reads it back through the production GDI capture path.</summary>
+[Collection(DesktopTests.Name)]
 public class ScreenCaptureTests
 {
     [Fact]

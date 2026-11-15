@@ -36,6 +36,16 @@ internal static class Fixture
     public static int Stride => StripDecoder.Width * 4;
 }
 
+/// <summary>
+/// Tests that drive real windows, the screen or tight timing loops. They run on their own, after the
+/// parallel tests, so they neither starve nor get starved by the async Discord tests on small runners.
+/// </summary>
+[CollectionDefinition(Name, DisableParallelization = true)]
+public sealed class DesktopTests
+{
+    public const string Name = "Desktop";
+}
+
 internal static class Wait
 {
     public static async Task For(Func<bool> condition, int timeoutMs = 5000)
@@ -69,7 +79,8 @@ internal sealed class FakeDiscord : IAsyncDisposable
     public async Task<Stream> Open(CancellationToken cancellationToken)
     {
         var client = new NamedPipeClientStream(".", _pipeName, PipeDirection.InOut, PipeOptions.Asynchronous);
-        await client.ConnectAsync(2000, cancellationToken);
+        // Generous: a busy CI runner can take a while to schedule the fake server.
+        await client.ConnectAsync(10000, cancellationToken);
         return client;
     }
 

@@ -10,6 +10,7 @@ namespace RichForever.Tests;
 /// Coarse guards against accidental slowdowns of the per-second work. Bounds are generous so
 /// shared CI runners do not flake; the measured values are printed for docs/PERFORMANCE.md.
 /// </summary>
+[Collection(DesktopTests.Name)]
 public class PerformanceTests(ITestOutputHelper output)
 {
     [Fact]
