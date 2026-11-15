@@ -1,0 +1,36 @@
+# Changelog
+
+All notable changes are documented here. The format follows
+[Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
+[Semantic Versioning](https://semver.org/).
+
+## [Unreleased]
+
+## [0.1.0-beta.1] - 2026-11-15
+
+First public beta. The companion and protocol are tested on Windows and against the real Discord
+client; the addon still needs verification in the live WoW Forever client.
+
+### Added
+
+- WoW Forever addon (interface 16001): character, zone, map, instance, group, status flags and session
+  start, drawn as a checksummed pixel strip; secret-value safe; slash commands and options panel;
+  sharing, name and stats switches.
+- Windows companion (.NET 10): tray app with status and settings window, waiting mode, game detection,
+  strip capture and validation, Discord Rich Presence over the local IPC pipe with rate limiting,
+  reconnect and clear-on-exit.
+- Presence for open world, dungeons, raids, battlegrounds, arenas and unknown instances; resting,
+  dead, away and optional combat states; group size; optional health, power and XP.
+- Privacy settings: pause, hide name, hide session time, hide zone, hide instance details.
+- Startup options: start with Windows (per user), connect to Discord immediately or only while
+  playing, exit when the game closes; `--uninstall` cleanup.
+- Original artwork: logo, 9 class icons, 4 activity badges, 49 zone and 29 instance cards, with an
+  asset catalog and user override file.
+- Tests: Lua addon tests with a WoW API mock; C# unit, integration (addon → pixels → presence),
+  Discord IPC (fake pipe server), real screen capture and performance tests.
+- CI (Lua lint and tests, .NET format/build/test/package, link check, workflow security, dependency
+  review), CodeQL, Dependabot, and a tag-driven release workflow with checksums and provenance
+  attestations.
+
+[Unreleased]: https://github.com/clintgalendez/richforever/compare/v0.1.0-beta.1...HEAD
+[0.1.0-beta.1]: https://github.com/clintgalendez/richforever/releases/tag/v0.1.0-beta.1
