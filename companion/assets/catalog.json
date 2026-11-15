@@ -1,0 +1,736 @@
+{
+  "default": "logo",
+  "types": {
+    "world": "type_world",
+    "dungeon": "type_dungeon",
+    "raid": "type_raid",
+    "battleground": "type_pvp",
+    "arena": "type_pvp",
+    "scenario": "type_dungeon",
+    "unknown": "type_dungeon"
+  },
+  "classes": {
+    "WARRIOR": "class_warrior",
+    "PALADIN": "class_paladin",
+    "HUNTER": "class_hunter",
+    "ROGUE": "class_rogue",
+    "PRIEST": "class_priest",
+    "SHAMAN": "class_shaman",
+    "MAGE": "class_mage",
+    "WARLOCK": "class_warlock",
+    "DRUID": "class_druid"
+  },
+  "zones": [
+    {
+      "key": "zone_durotar",
+      "names": [
+        "Durotar"
+      ],
+      "mapIds": [
+        1411
+      ]
+    },
+    {
+      "key": "zone_mulgore",
+      "names": [
+        "Mulgore"
+      ],
+      "mapIds": [
+        1412
+      ]
+    },
+    {
+      "key": "zone_the_barrens",
+      "names": [
+        "The Barrens"
+      ],
+      "mapIds": [
+        1413
+      ]
+    },
+    {
+      "key": "zone_alterac_mountains",
+      "names": [
+        "Alterac Mountains"
+      ],
+      "mapIds": [
+        1416
+      ]
+    },
+    {
+      "key": "zone_arathi_highlands",
+      "names": [
+        "Arathi Highlands"
+      ],
+      "mapIds": [
+        1417
+      ]
+    },
+    {
+      "key": "zone_badlands",
+      "names": [
+        "Badlands"
+      ],
+      "mapIds": [
+        1418
+      ]
+    },
+    {
+      "key": "zone_blasted_lands",
+      "names": [
+        "Blasted Lands"
+      ],
+      "mapIds": [
+        1419
+      ]
+    },
+    {
+      "key": "zone_tirisfal_glades",
+      "names": [
+        "Tirisfal Glades"
+      ],
+      "mapIds": [
+        1420
+      ]
+    },
+    {
+      "key": "zone_silverpine_forest",
+      "names": [
+        "Silverpine Forest"
+      ],
+      "mapIds": [
+        1421
+      ]
+    },
+    {
+      "key": "zone_western_plaguelands",
+      "names": [
+        "Western Plaguelands"
+      ],
+      "mapIds": [
+        1422
+      ]
+    },
+    {
+      "key": "zone_eastern_plaguelands",
+      "names": [
+        "Eastern Plaguelands"
+      ],
+      "mapIds": [
+        1423
+      ]
+    },
+    {
+      "key": "zone_hillsbrad_foothills",
+      "names": [
+        "Hillsbrad Foothills"
+      ],
+      "mapIds": [
+        1424
+      ]
+    },
+    {
+      "key": "zone_the_hinterlands",
+      "names": [
+        "The Hinterlands"
+      ],
+      "mapIds": [
+        1425
+      ]
+    },
+    {
+      "key": "zone_dun_morogh",
+      "names": [
+        "Dun Morogh"
+      ],
+      "mapIds": [
+        1426
+      ]
+    },
+    {
+      "key": "zone_searing_gorge",
+      "names": [
+        "Searing Gorge"
+      ],
+      "mapIds": [
+        1427
+      ]
+    },
+    {
+      "key": "zone_burning_steppes",
+      "names": [
+        "Burning Steppes"
+      ],
+      "mapIds": [
+        1428
+      ]
+    },
+    {
+      "key": "zone_elwynn_forest",
+      "names": [
+        "Elwynn Forest"
+      ],
+      "mapIds": [
+        1429
+      ]
+    },
+    {
+      "key": "zone_deadwind_pass",
+      "names": [
+        "Deadwind Pass"
+      ],
+      "mapIds": [
+        1430
+      ]
+    },
+    {
+      "key": "zone_duskwood",
+      "names": [
+        "Duskwood"
+      ],
+      "mapIds": [
+        1431
+      ]
+    },
+    {
+      "key": "zone_loch_modan",
+      "names": [
+        "Loch Modan"
+      ],
+      "mapIds": [
+        1432
+      ]
+    },
+    {
+      "key": "zone_redridge_mountains",
+      "names": [
+        "Redridge Mountains"
+      ],
+      "mapIds": [
+        1433
+      ]
+    },
+    {
+      "key": "zone_stranglethorn_vale",
+      "names": [
+        "Stranglethorn Vale"
+      ],
+      "mapIds": [
+        1434
+      ]
+    },
+    {
+      "key": "zone_swamp_of_sorrows",
+      "names": [
+        "Swamp of Sorrows"
+      ],
+      "mapIds": [
+        1435
+      ]
+    },
+    {
+      "key": "zone_westfall",
+      "names": [
+        "Westfall"
+      ],
+      "mapIds": [
+        1436
+      ]
+    },
+    {
+      "key": "zone_wetlands",
+      "names": [
+        "Wetlands"
+      ],
+      "mapIds": [
+        1437
+      ]
+    },
+    {
+      "key": "zone_teldrassil",
+      "names": [
+        "Teldrassil"
+      ],
+      "mapIds": [
+        1438
+      ]
+    },
+    {
+      "key": "zone_darkshore",
+      "names": [
+        "Darkshore"
+      ],
+      "mapIds": [
+        1439
+      ]
+    },
+    {
+      "key": "zone_ashenvale",
+      "names": [
+        "Ashenvale"
+      ],
+      "mapIds": [
+        1440
+      ]
+    },
+    {
+      "key": "zone_thousand_needles",
+      "names": [
+        "Thousand Needles"
+      ],
+      "mapIds": [
+        1441
+      ]
+    },
+    {
+      "key": "zone_stonetalon_mountains",
+      "names": [
+        "Stonetalon Mountains"
+      ],
+      "mapIds": [
+        1442
+      ]
+    },
+    {
+      "key": "zone_desolace",
+      "names": [
+        "Desolace"
+      ],
+      "mapIds": [
+        1443
+      ]
+    },
+    {
+      "key": "zone_feralas",
+      "names": [
+        "Feralas"
+      ],
+      "mapIds": [
+        1444
+      ]
+    },
+    {
+      "key": "zone_dustwallow_marsh",
+      "names": [
+        "Dustwallow Marsh"
+      ],
+      "mapIds": [
+        1445
+      ]
+    },
+    {
+      "key": "zone_tanaris",
+      "names": [
+        "Tanaris"
+      ],
+      "mapIds": [
+        1446
+      ]
+    },
+    {
+      "key": "zone_azshara",
+      "names": [
+        "Azshara"
+      ],
+      "mapIds": [
+        1447
+      ]
+    },
+    {
+      "key": "zone_felwood",
+      "names": [
+        "Felwood"
+      ],
+      "mapIds": [
+        1448
+      ]
+    },
+    {
+      "key": "zone_ungoro_crater",
+      "names": [
+        "Un'Goro Crater"
+      ],
+      "mapIds": [
+        1449
+      ]
+    },
+    {
+      "key": "zone_moonglade",
+      "names": [
+        "Moonglade"
+      ],
+      "mapIds": [
+        1450
+      ]
+    },
+    {
+      "key": "zone_silithus",
+      "names": [
+        "Silithus"
+      ],
+      "mapIds": [
+        1451
+      ]
+    },
+    {
+      "key": "zone_winterspring",
+      "names": [
+        "Winterspring"
+      ],
+      "mapIds": [
+        1452
+      ]
+    },
+    {
+      "key": "zone_stormwind_city",
+      "names": [
+        "Stormwind City"
+      ],
+      "mapIds": [
+        1453
+      ]
+    },
+    {
+      "key": "zone_orgrimmar",
+      "names": [
+        "Orgrimmar"
+      ],
+      "mapIds": [
+        1454
+      ]
+    },
+    {
+      "key": "zone_ironforge",
+      "names": [
+        "Ironforge"
+      ],
+      "mapIds": [
+        1455
+      ]
+    },
+    {
+      "key": "zone_thunder_bluff",
+      "names": [
+        "Thunder Bluff"
+      ],
+      "mapIds": [
+        1456
+      ]
+    },
+    {
+      "key": "zone_darnassus",
+      "names": [
+        "Darnassus"
+      ],
+      "mapIds": [
+        1457
+      ]
+    },
+    {
+      "key": "zone_undercity",
+      "names": [
+        "Undercity"
+      ],
+      "mapIds": [
+        1458
+      ]
+    },
+    {
+      "key": "zone_mount_hyjal",
+      "names": [
+        "Mount Hyjal"
+      ],
+      "mapIds": [
+        2482
+      ]
+    },
+    {
+      "key": "zone_zephras_isle",
+      "names": [
+        "Zephras Isle"
+      ],
+      "mapIds": [
+        2521
+      ]
+    },
+    {
+      "key": "zone_riverglades",
+      "names": [
+        "Riverglades"
+      ],
+      "mapIds": [
+        2548
+      ]
+    }
+  ],
+  "instances": [
+    {
+      "key": "inst_ragefire_chasm",
+      "names": [
+        "Ragefire Chasm"
+      ],
+      "instanceIds": [
+        389
+      ]
+    },
+    {
+      "key": "inst_wailing_caverns",
+      "names": [
+        "Wailing Caverns"
+      ],
+      "instanceIds": [
+        43
+      ]
+    },
+    {
+      "key": "inst_the_deadmines",
+      "names": [
+        "The Deadmines",
+        "Deadmines"
+      ],
+      "instanceIds": [
+        36
+      ]
+    },
+    {
+      "key": "inst_shadowfang_keep",
+      "names": [
+        "Shadowfang Keep"
+      ],
+      "instanceIds": [
+        33
+      ]
+    },
+    {
+      "key": "inst_blackfathom_deeps",
+      "names": [
+        "Blackfathom Deeps"
+      ],
+      "instanceIds": [
+        48
+      ]
+    },
+    {
+      "key": "inst_the_stockade",
+      "names": [
+        "The Stockade",
+        "Stormwind Stockade"
+      ],
+      "instanceIds": [
+        34
+      ]
+    },
+    {
+      "key": "inst_gnomeregan",
+      "names": [
+        "Gnomeregan"
+      ],
+      "instanceIds": [
+        90
+      ]
+    },
+    {
+      "key": "inst_razorfen_kraul",
+      "names": [
+        "Razorfen Kraul"
+      ],
+      "instanceIds": [
+        47
+      ]
+    },
+    {
+      "key": "inst_scarlet_monastery",
+      "names": [
+        "Scarlet Monastery"
+      ],
+      "instanceIds": [
+        189
+      ]
+    },
+    {
+      "key": "inst_razorfen_downs",
+      "names": [
+        "Razorfen Downs"
+      ],
+      "instanceIds": [
+        129
+      ]
+    },
+    {
+      "key": "inst_uldaman",
+      "names": [
+        "Uldaman"
+      ],
+      "instanceIds": [
+        70
+      ]
+    },
+    {
+      "key": "inst_zulfarrak",
+      "names": [
+        "Zul'Farrak"
+      ],
+      "instanceIds": [
+        209
+      ]
+    },
+    {
+      "key": "inst_maraudon",
+      "names": [
+        "Maraudon"
+      ],
+      "instanceIds": [
+        349
+      ]
+    },
+    {
+      "key": "inst_the_temple_of_atalhakkar",
+      "names": [
+        "The Temple of Atal'Hakkar",
+        "Sunken Temple",
+        "Temple of Atal'Hakkar"
+      ],
+      "instanceIds": [
+        109
+      ]
+    },
+    {
+      "key": "inst_blackrock_depths",
+      "names": [
+        "Blackrock Depths"
+      ],
+      "instanceIds": [
+        230
+      ]
+    },
+    {
+      "key": "inst_blackrock_spire",
+      "names": [
+        "Blackrock Spire",
+        "Lower Blackrock Spire",
+        "Upper Blackrock Spire"
+      ],
+      "instanceIds": [
+        229
+      ]
+    },
+    {
+      "key": "inst_dire_maul",
+      "names": [
+        "Dire Maul"
+      ],
+      "instanceIds": [
+        429
+      ]
+    },
+    {
+      "key": "inst_scholomance",
+      "names": [
+        "Scholomance"
+      ],
+      "instanceIds": [
+        289
+      ]
+    },
+    {
+      "key": "inst_stratholme",
+      "names": [
+        "Stratholme"
+      ],
+      "instanceIds": [
+        329
+      ]
+    },
+    {
+      "key": "inst_molten_core",
+      "names": [
+        "Molten Core"
+      ],
+      "instanceIds": [
+        409
+      ]
+    },
+    {
+      "key": "inst_onyxias_lair",
+      "names": [
+        "Onyxia's Lair"
+      ],
+      "instanceIds": [
+        249
+      ]
+    },
+    {
+      "key": "inst_blackwing_lair",
+      "names": [
+        "Blackwing Lair"
+      ],
+      "instanceIds": [
+        469
+      ]
+    },
+    {
+      "key": "inst_zulgurub",
+      "names": [
+        "Zul'Gurub"
+      ],
+      "instanceIds": [
+        309
+      ]
+    },
+    {
+      "key": "inst_ruins_of_ahnqiraj",
+      "names": [
+        "Ruins of Ahn'Qiraj"
+      ],
+      "instanceIds": [
+        509
+      ]
+    },
+    {
+      "key": "inst_temple_of_ahnqiraj",
+      "names": [
+        "Temple of Ahn'Qiraj",
+        "Ahn'Qiraj Temple"
+      ],
+      "instanceIds": [
+        531
+      ]
+    },
+    {
+      "key": "inst_naxxramas",
+      "names": [
+        "Naxxramas"
+      ],
+      "instanceIds": [
+        533
+      ]
+    },
+    {
+      "key": "inst_warsong_gulch",
+      "names": [
+        "Warsong Gulch"
+      ],
+      "instanceIds": [
+        489
+      ]
+    },
+    {
+      "key": "inst_arathi_basin",
+      "names": [
+        "Arathi Basin"
+      ],
+      "instanceIds": [
+        529
+      ]
+    },
+    {
+      "key": "inst_alterac_valley",
+      "names": [
+        "Alterac Valley"
+      ],
+      "instanceIds": [
+        30
+      ]
+    }
+  ]
+}

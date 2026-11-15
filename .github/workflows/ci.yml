@@ -31,6 +31,37 @@ jobs:
       - name: Fixtures are up to date
         run: git diff --exit-code -- tests/fixtures
 
+  companion:
+    name: Companion (.NET, Windows)
+    runs-on: windows-latest
+    timeout-minutes: 20
+    env:
+      DOTNET_NOLOGO: "true"
+      DOTNET_CLI_TELEMETRY_OPTOUT: "true"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@0f4a354dd5547a28c70b7853dbd95d5b67886e73 # v6.1.0
+        with:
+          dotnet-version: "10.0.x"
+      - name: Restore (lock files, NuGet vulnerability audit)
+        run: dotnet restore companion --locked-mode
+      - name: Formatting
+        run: dotnet format companion --verify-no-changes --no-restore
+      - name: Build (analyzers, warnings as errors)
+        run: dotnet build companion -c Release --no-restore
+      - name: Test
+        run: dotnet test companion -c Release --no-build
+      - name: Package
+        shell: pwsh
+        run: ./scripts/package.ps1 -Version 0.0.0-ci
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: richforever-ci-build
+          path: dist/
+          retention-days: 7
+
   workflows:
     name: Workflow security
     runs-on: ubuntu-latest

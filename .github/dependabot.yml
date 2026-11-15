@@ -1,0 +1,25 @@
+version: 2
+updates:
+  - package-ecosystem: nuget
+    directory: /companion
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7
+    groups:
+      test-dependencies:
+        patterns: ["*"]
+    open-pull-requests-limit: 5
+    labels: [dependencies, companion]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7
+    groups:
+      actions:
+        patterns: ["*"]
+    open-pull-requests-limit: 5
+    labels: [dependencies, ci]

@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/RichForever.App/RichForever.App.csproj" />
+    <Project Path="src/RichForever.Core/RichForever.Core.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/RichForever.Tests/RichForever.Tests.csproj" />
+  </Folder>
+</Solution>
