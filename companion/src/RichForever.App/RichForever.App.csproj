@@ -14,6 +14,8 @@
     <TieredPGO>true</TieredPGO>
     <UseSystemResourceKeys>true</UseSystemResourceKeys>
     <PublishSingleFile>true</PublishSingleFile>
+    <!-- The analyzer pulls in an SDK-versioned ILLink package, which would tie the lock files to one SDK patch. -->
+    <EnableSingleFileAnalyzer>false</EnableSingleFileAnalyzer>
     <!-- Application.SetColorMode is marked experimental. -->
     <NoWarn>$(NoWarn);WFO5001</NoWarn>
   </PropertyGroup>
