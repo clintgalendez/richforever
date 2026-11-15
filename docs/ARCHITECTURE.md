@@ -159,7 +159,7 @@ reuses the stored value (if under 12 hours old), so reloading the UI does not re
 
 | Discord field | Content |
 | --- | --- |
-| Application name | Your Discord application's name ("World of Warcraft Forever") |
+| Application name | "World of Warcraft Forever": RichForever's Discord application `1571656707078103191` (or your own) |
 | `details` | `Archer · Level 60 Human Paladin` (name optional) |
 | `state` | `Exploring Eastern Plaguelands`, `Resting in Goldshire`, `Inside Stratholme`, `In Warsong Gulch`, `Inside an instance`, `Dead in …`, `Away in …`, optional `In combat in …` |
 | `timestamps.start` | Session start → Discord shows "elapsed" |

@@ -86,13 +86,16 @@ public class SettingsTests : IDisposable
     }
 
     [Theory]
-    [InlineData("", false)]
-    [InlineData("123", false)]
-    [InlineData("12345678901234567a", false)]
-    [InlineData("123456789012345678", true)]
-    public void Application_id_format(string id, bool valid)
+    [InlineData("", AppSettings.DefaultApplicationId, true)]
+    [InlineData("123456789012345678", "123456789012345678", true)]
+    [InlineData("123", "123", false)]
+    [InlineData("12345678901234567a", "12345678901234567a", false)]
+    public void Empty_application_id_means_richforevers_own_app(string id, string effective, bool valid)
     {
-        Assert.Equal(valid, new AppSettings { DiscordApplicationId = id }.HasValidApplicationId);
+        var settings = new AppSettings { DiscordApplicationId = id };
+
+        Assert.Equal(effective, settings.EffectiveApplicationId);
+        Assert.Equal(valid, settings.HasValidApplicationId);
     }
 }
 

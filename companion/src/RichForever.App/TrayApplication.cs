@@ -20,6 +20,7 @@ internal sealed class TrayApplication : ApplicationContext
 
     public TrayApplication(bool startedByWindows)
     {
+        var firstRun = !File.Exists(AppPaths.Settings);
         var settings = AppSettings.Load(AppPaths.Settings, out var warning);
         Log.Verbose = settings.VerboseLogging;
         Log.Info($"RichForever {Version} starting{(startedByWindows ? " with Windows" : "")}.");
@@ -49,7 +50,19 @@ internal sealed class TrayApplication : ApplicationContext
         _controller.ExitRequested += async () => await ExitAsync();
         _controller.Start();
 
-        if (!startedByWindows && !settings.HasValidApplicationId) ShowWindow();
+        if (firstRun)
+        {
+            // Show the window once so new users see the status and settings; nothing is required.
+            try
+            {
+                settings.Save(AppPaths.Settings);
+            }
+            catch (Exception e) when (e is IOException or UnauthorizedAccessException)
+            {
+                Log.Warn($"Could not save settings: {e.Message}");
+            }
+            if (!startedByWindows) ShowWindow();
+        }
     }
 
     private void ShowWindow()

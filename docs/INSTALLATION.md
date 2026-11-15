@@ -1,7 +1,7 @@
 # Installation
 
 RichForever has two pieces: an **addon** inside WoW Forever and a **companion** app on Windows. You
-need both, plus a Discord application ID.
+need both. No Discord account setup is needed.
 
 ## 1. Download
 
@@ -41,10 +41,12 @@ or with the GitHub CLI: `gh attestation verify RichForever-0.1.0-beta.1-win-x64.
 
 ## 4. Configure Discord
 
-1. Follow [DISCORD_SETUP.md](DISCORD_SETUP.md) to get an application ID (two minutes).
-2. Paste it into **Discord app ID** in the RichForever window and click **Save**.
-3. In Discord: **User Settings → Activity Privacy → Share your detected activities with others** must
+1. Run the Discord desktop app (the browser version cannot show Rich Presence).
+2. In Discord: **User Settings → Activity Privacy → Share your detected activities with others** must
    be on.
+3. That is all. RichForever uses its own Discord application, so your profile shows
+   *Playing World of Warcraft Forever* with RichForever's artwork. To use your own application name or
+   art instead, see [DISCORD_SETUP.md](DISCORD_SETUP.md).
 
 ## 5. Launch WoW Forever
 

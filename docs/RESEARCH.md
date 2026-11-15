@@ -57,9 +57,14 @@ portal and would add a large binary for no benefit here.
 
 Verified on a real Discord client (Windows, Discord app 1.0.9268): the companion finds the pipe,
 completes the handshake framing and receives Discord's `Invalid Client ID` close for an unregistered
-ID, which it reports and backs off from. A successful `SET_ACTIVITY` on the real client requires a
-registered application ID and is part of the live verification issue; the success path is covered by
-tests against a fake Discord pipe server that speaks the same framing.
+ID, which it reports and backs off from.
+
+Verified with RichForever's registered application `1571656707078103191` on 16 November 2026: the
+companion, with no application ID configured, connected (`READY` with the user), and Discord accepted
+every `SET_ACTIVITY` while the strip demo cycled world, dungeon, raid and Unicode presences. A direct
+`SET_ACTIVITY` showed Discord resolving the asset keys to uploaded art (`inst_stratholme` →
+`1571658247793025077`, `class_paladin` → `1571658182579851445`). The public asset list of the
+application contains all 92 keys in `catalog.json`.
 
 ## Companion technology
 

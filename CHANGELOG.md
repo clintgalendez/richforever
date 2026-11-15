@@ -6,6 +6,13 @@ All notable changes are documented here. The format follows
 
 ## [Unreleased]
 
+### Changed
+
+- RichForever now uses its own Discord application, "World of Warcraft Forever"
+  (`1571656707078103191`), with all artwork uploaded. No Discord setup is needed; a custom
+  application ID is optional (#18).
+- The window opens once on first start instead of asking for an application ID.
+
 ### Fixed
 
 - `SHA256SUMS.txt` is written with LF line endings so `sha256sum -c` works (#28).
