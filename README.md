@@ -24,7 +24,7 @@ Inside Stratholme  (3 of 5)
 [Stratholme art]  [Paladin icon]
 ```
 
-> **Project status: beta (0.1.0-beta.2).** The companion, the protocol and the Discord integration are
+> **Project status: beta (0.1.0-beta.3).** The companion, the protocol and the Discord integration are
 > implemented and tested on Windows, and the full pipeline has been run on a real screen against the
 > real Discord client, which displays the presence with the bundled artwork. The addon has **not yet
 > been run inside the live WoW Forever client**; that check is the next milestone. See [Known limitations](#known-limitations).
