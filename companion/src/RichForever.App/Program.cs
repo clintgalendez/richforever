@@ -8,16 +8,24 @@ internal static class Program
         if (args.Contains("--uninstall", StringComparer.OrdinalIgnoreCase)) return Uninstall(quiet: args.Contains("--quiet", StringComparer.OrdinalIgnoreCase));
 
         var startedByWindows = args.Contains("--startup", StringComparer.OrdinalIgnoreCase);
-        using var mutex = new Mutex(true, @"Local\RichForever.Companion", out var firstInstance);
-        if (!firstInstance)
+        var updated = args.Contains("--updated", StringComparer.OrdinalIgnoreCase);
+        TrayApplication app;
+        using (var mutex = new Mutex(true, @"Local\RichForever.Companion", out var firstInstance))
         {
-            if (!startedByWindows) MessageBox.Show("RichForever is already running. Look for its icon in the system tray.", "RichForever");
-            return 0;
-        }
+            if (!firstInstance)
+            {
+                if (!startedByWindows && !updated) MessageBox.Show("RichForever is already running. Look for its icon in the system tray.", "RichForever");
+                return 0;
+            }
 
-        ApplicationConfiguration.Initialize();
-        Application.SetColorMode(SystemColorMode.Dark);
-        Application.Run(new TrayApplication(startedByWindows));
+            ApplicationConfiguration.Initialize();
+            Application.SetColorMode(SystemColorMode.Dark);
+            app = new TrayApplication(startedByWindows, updated);
+            Application.Run(app);
+            mutex.ReleaseMutex();
+        }
+        // After the mutex is gone, so the new version does not find "another copy" running.
+        if (app.RestartRequested) Updater.Restart();
         return 0;
     }
 

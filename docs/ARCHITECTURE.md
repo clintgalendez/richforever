@@ -120,6 +120,7 @@ reuses the stored value (if under 12 hours old), so reloading the UI does not re
 | `DiscordIpcClient` | Discord's local RPC pipe: handshake, `SET_ACTIVITY`, ping/pong, close |
 | `DiscordPresenceSync` | One background loop: connect, send only changes, ≤ 1 update per 5 s, reconnect with backoff (5 s → 60 s), clear on exit |
 | `AppSettings` | JSON settings with validation and atomic save |
+| `Updates` | GitHub release list → newest applicable update (Semantic Versioning precedence), `SHA256SUMS.txt` lookup |
 
 `RichForever.App` (Windows):
 
@@ -130,6 +131,7 @@ reuses the stored value (if under 12 hours old), so reloading the UI does not re
 | `ScreenCapture` | GDI `BitBlt` of the strip region into one reusable DIB |
 | `TrayApplication`, `MainForm` | Tray icon and menu, status and settings window |
 | `StartupRegistration`, `Log` | HKCU Run entry, size-capped log file |
+| `Updater` | Download and verify a release ZIP, swap the files next to the executable (old ones renamed to `*.update-old`, rollback on failure), restart |
 
 ### Lifecycle
 

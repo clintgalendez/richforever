@@ -18,21 +18,32 @@ It does not read your account name, realm, guild, chat, friends, inventory, gold
 3. The companion sends the presence to the Discord desktop app through a local named pipe.
 4. Discord shows it to people who can see your activity, according to your Discord settings.
 
-Only step 4 leaves your computer, and only the fields shown on your profile.
+Only step 4 leaves your computer, and only the fields shown on your profile. None of your game data
+is part of the update check below.
 
 Note that the coloured block is part of your screen, so screenshots and streams include it. It
 encodes the same information that the presence shows, in a form that is easy to decode.
 
 ## What is never done
 
-- No telemetry, analytics, crash reporting or update checks.
-- No network requests of RichForever's own. No servers, no accounts.
+- No telemetry, analytics or crash reporting. No servers of RichForever's own, no accounts.
 - No Discord password, token or OAuth login; only a public application ID is used. The presence is
   published under RichForever's Discord application, which only determines the name and artwork Discord
   displays; the application owner receives no data from it.
 - No reading of game memory, other windows (the companion reads the game's corner only when the game
   window is the topmost window there) or files outside its own settings and log.
 - Local file paths and process details are never sent to Discord.
+
+## Update checks
+
+With *Install updates automatically* on (the default), the companion asks GitHub for the list of
+RichForever releases a minute after it starts and every 6 hours
+(`https://api.github.com/repos/clintgalendez/richforever/releases`), and downloads a newer release
+from `github.com`. That request carries your IP address and a `RichForever/<version>` user agent,
+like any download from GitHub, and nothing else: no identifiers, settings or game data. GitHub's
+[privacy statement](https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement)
+applies. Turn the setting off and the companion makes no network requests unless you choose
+*Check for updates…*.
 
 ## Your controls
 
@@ -48,6 +59,7 @@ encodes the same information that the presence shows, in a form that is easy to 
 | Hide dungeon and raid details | Shows "Inside an instance" and generic art |
 | Show health, power and XP | Off by default |
 | Show group size / combat | Group size on by default, combat off |
+| Install updates automatically | On by default; off means no network requests of RichForever's own |
 
 ## Stored data
 

@@ -42,6 +42,9 @@ public sealed partial class AppSettings
     public DiscordConnectMode DiscordMode { get; set; } = DiscordConnectMode.WhenGameRunning;
     public bool ExitWhenGameCloses { get; set; }
 
+    /// <summary>Check GitHub Releases every few hours and install newer versions.</summary>
+    public bool AutoUpdate { get; set; } = true;
+
     // Advanced
     public int GamePollSeconds { get; set; } = 5;
     public int CaptureIntervalMilliseconds { get; set; } = 1000;

@@ -12,6 +12,9 @@ Discord Rich Presence for World of Warcraft: Forever.
 4. Start WoW Forever and keep the small coloured block in the top-left corner of the
    game uncovered. Play in windowed or windowed (fullscreen) mode.
 
+RichForever updates itself from GitHub Releases, so keep it in a folder you can
+write to. Turn this off under Updates in the RichForever window.
+
 The framework-dependent download needs the .NET 10 Desktop Runtime:
 https://dotnet.microsoft.com/download/dotnet/10.0
 

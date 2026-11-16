@@ -35,6 +35,7 @@ or with the GitHub CLI: `gh attestation verify RichForever-0.1.0-beta.2-win-x64.
 
 1. Extract the companion ZIP to a folder of your choice, for example
    `%LOCALAPPDATA%\Programs\RichForever`. No installer and no administrator rights are needed.
+   Use a folder you can write to (not `Program Files`): updates replace the files in it.
 2. Run `RichForever.exe`. If Windows SmartScreen says it protected your PC, the build is simply not
    code-signed yet: click **More info → Run anyway** (after verifying the checksum if you like).
 3. A tray icon appears and, on first start, the RichForever window opens.
@@ -72,6 +73,12 @@ In the RichForever window, under **Startup**:
   game. Uses about 13 MB of memory and practically no CPU while waiting.
 - **Connect to Discord only while WoW Forever runs** (default) or **as soon as RichForever starts**.
 - **Exit RichForever when WoW Forever closes**.
+
+Under **Updates**, **Install updates automatically** (default) checks GitHub Releases a minute after
+start and every 6 hours. A newer version is downloaded, checked against the release's
+`SHA256SUMS.txt` and installed; RichForever then restarts, or waits until WoW Forever closes if you
+are playing. Turn it off to update by hand, or use tray icon → **Check for updates…** at any time.
+The **Updates** line in the window's status shows the last result.
 
 ## 8. Turn presence off
 

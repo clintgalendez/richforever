@@ -42,7 +42,8 @@ Inside Stratholme  (3 of 5)
   seconds and does nothing else. No Discord connection until the game starts (configurable).
 - Start with Windows (per user, no administrator rights), exit when the game closes, reconnects to
   Discord automatically.
-- No accounts, no tokens, no telemetry, no network requests of its own.
+- Keeps itself up to date from GitHub Releases (can be turned off).
+- No accounts, no tokens, no telemetry. The update check is its only network request of its own.
 
 ## Screenshots
 
@@ -85,13 +86,14 @@ Full guide: [docs/INSTALLATION.md](docs/INSTALLATION.md). In short:
 2. Extract the addon so you get `World of Warcraft\_forever_\Interface\AddOns\RichForever\RichForever.toc`.
 3. Extract the companion anywhere (for example `%LOCALAPPDATA%\Programs\RichForever`) and run
    `RichForever.exe`. Windows SmartScreen may warn because the build is not code-signed yet; choose
-   *More info → Run anyway* if you trust the download (verify it with `SHA256SUMS.txt`).
+   *More info → Run anyway* if you trust the download (verify it with `SHA256SUMS.txt`). Pick a
+   folder you can write to: updates replace the files in it.
 4. Start WoW Forever and log in. Your Discord profile updates within a few seconds.
 
 ## Using it
 
 - **Tray icon**: right-click for status, *Open RichForever…*, *Connect to Discord*, *Pause presence*,
-  *Open log folder* and *Exit*. Double-click opens the window.
+  *Check for updates…*, *Open log folder* and *Exit*. Double-click opens the window.
 - **Window**: live status (game, Discord, character, presence, errors, CPU and memory) and settings.
 - **In game**: `/rfor status`, `/rfor on|off`, `/rfor name on|off`, `/rfor stats on|off`, `/rfor debug`,
   or *Options → AddOns → RichForever*.
@@ -104,6 +106,7 @@ Full guide: [docs/INSTALLATION.md](docs/INSTALLATION.md). In short:
 | Connect to Discord only while WoW Forever runs (default) | No Discord connection in waiting mode. |
 | Connect to Discord as soon as RichForever starts | Connects immediately (presence still appears only while you play). |
 | Exit RichForever when WoW Forever closes | The companion quits when the game process ends. |
+| Install updates automatically (default) | Checks GitHub Releases a minute after start and every 6 hours, installs a newer version and restarts; while you play, the restart waits until WoW Forever closes. |
 
 "Start only when WoW launches" is not possible without administrator rights; *start with Windows +
 waiting mode* is the light equivalent (about 0.03 % of one CPU core and 13 MB of memory while waiting).

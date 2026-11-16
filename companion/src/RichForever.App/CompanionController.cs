@@ -8,12 +8,20 @@ namespace RichForever.App;
 /// <summary>
 /// Application lifecycle. Waiting mode: one cheap process lookup every few seconds, no Discord
 /// connection, no capture. Game mode: one strip capture per second while the game window is
-/// visible; Discord updates only when the presence changes. Runs on the UI thread.
+/// visible; Discord updates only when the presence changes. Updates: a check a minute after start and
+/// every 6 hours; a new version is installed at once and the app restarts when the game is not running.
+/// Runs on the UI thread.
 /// </summary>
 internal sealed class CompanionController : IAsyncDisposable
 {
+    private const int FirstUpdateCheckMs = 60_000, UpdateCheckIntervalMs = 6 * 60 * 60 * 1000;
     private readonly FormsTimer _pollTimer = new();
     private readonly FormsTimer _captureTimer = new();
+    private readonly FormsTimer _updateTimer = new() { Interval = FirstUpdateCheckMs };
+    private readonly CancellationTokenSource _updateCancel = new();
+    private Task _updateWork = Task.CompletedTask;
+    private bool _updateBusy, _restartPending;
+    private string? _notifiedVersion;
     private readonly GameWatcher _game = new();
     private readonly ScreenCapture _capture = new();
     private readonly PresenceEngine _engine = new();
@@ -30,6 +38,7 @@ internal sealed class CompanionController : IAsyncDisposable
         Catalog = LoadCatalog();
         _pollTimer.Tick += (_, _) => PollGame();
         _captureTimer.Tick += (_, _) => CaptureTick();
+        _updateTimer.Tick += async (_, _) => await AutoUpdateAsync().ConfigureAwait(true);
         _discord.StateChanged += state => _ui.Post(_ =>
         {
             Log.Info($"Discord: {state.Status} - {state.Message}");
@@ -45,6 +54,7 @@ internal sealed class CompanionController : IAsyncDisposable
     public DiscordState Discord => _discord.State;
     public Activity? CurrentActivity { get; private set; }
     public string? LastError { get; private set; }
+    public string UpdateStatus { get; private set; } = Updater.Supported ? "Not checked yet" : "Not available in development builds";
     public string GameStatus => !_engine.GameRunning ? "Waiting for WoW Forever"
         : _engine.Snapshot is not null ? $"Running (PID {_game.ProcessId}) - receiving data"
         : !_stripVisible ? $"Running (PID {_game.ProcessId}) - game window hidden or covered"
@@ -59,12 +69,19 @@ internal sealed class CompanionController : IAsyncDisposable
     public event Action? Changed;
     public event Action? ExitRequested;
 
+    /// <summary>A new version is in place; exit and start it.</summary>
+    public event Action? RestartRequested;
+
+    /// <summary>An automatic update could not be installed (raised once per version).</summary>
+    public event Action<AvailableUpdate>? UpdateFailed;
+
     public void Start()
     {
         _discord.Start();
         ApplySettings(Settings, save: false);
         PollGame();
         if (!_engine.GameRunning) _pollTimer.Start();
+        if (Updater.Supported) _updateTimer.Start();
     }
 
     public void ApplySettings(AppSettings settings, bool save = true)
@@ -113,10 +130,69 @@ internal sealed class CompanionController : IAsyncDisposable
         Push();
     }
 
+    /// <summary>
+    /// Ask GitHub for a newer release and, if <paramref name="confirm"/> agrees, download, verify and
+    /// install it, then restart: now if <paramref name="restartNow"/> or the game is not running,
+    /// otherwise when the game closes. One update at a time, the confirmation included. False when
+    /// nothing was installed; <see cref="UpdateStatus"/> says why.
+    /// </summary>
+    public async Task<bool> UpdateAsync(Func<AvailableUpdate, bool> confirm, bool restartNow)
+    {
+        if (!Updater.Supported || _updateBusy || _restartPending) return false;
+        _updateBusy = true;
+        var failure = "Update check failed";
+        AvailableUpdate update;
+        try
+        {
+            SetUpdateStatus("Checking for updates…");
+            var found = await Updater.CheckAsync(_updateCancel.Token).ConfigureAwait(true);
+            SetUpdateStatus(found is null ? $"Up to date (checked {DateTime.Now:t})" : $"RichForever {found.Version} is available");
+            if (found is null || !confirm(found)) return false;
+            update = found;
+            failure = $"Could not install RichForever {update.Version}";
+            SetUpdateStatus($"Installing RichForever {update.Version}…");
+            _updateWork = Updater.InstallAsync(update, Updater.Executable, _updateCancel.Token);
+            await _updateWork.ConfigureAwait(true);
+            _restartPending = true;
+        }
+        catch (Exception e) when (IsUpdateError(e))
+        {
+            SetUpdateStatus($"{failure}: {e.Message}");
+            return false;
+        }
+        finally
+        {
+            _updateBusy = false;
+        }
+        if (restartNow || !_engine.GameRunning)
+        {
+            SetUpdateStatus($"RichForever {update.Version} installed; restarting");
+            RestartRequested?.Invoke();
+        }
+        else
+        {
+            SetUpdateStatus(Settings.ExitWhenGameCloses
+                ? $"RichForever {update.Version} installed; it starts the next time you open RichForever"
+                : $"RichForever {update.Version} installed; it takes over when WoW Forever closes");
+        }
+        return true;
+    }
+
     public async ValueTask DisposeAsync()
     {
         _pollTimer.Dispose();
         _captureTimer.Dispose();
+        _updateTimer.Dispose();
+        // Let a running install finish moving files (only the download is cancellable).
+        await _updateCancel.CancelAsync().ConfigureAwait(true);
+        try
+        {
+            await _updateWork.ConfigureAwait(true);
+        }
+        catch (Exception e) when (IsUpdateError(e))
+        {
+        }
+        _updateCancel.Dispose();
         await _discord.DisposeAsync().ConfigureAwait(true);
         _capture.Dispose();
         _game.Dispose();
@@ -173,8 +249,44 @@ internal sealed class CompanionController : IAsyncDisposable
             ExitRequested?.Invoke();
             return;
         }
+        if (_restartPending)
+        {
+            RestartRequested?.Invoke();
+            return;
+        }
         _pollTimer.Start();
     }
+
+    private async Task AutoUpdateAsync()
+    {
+        _updateTimer.Interval = UpdateCheckIntervalMs;
+        // A user-started update may be in progress (or waiting for an answer); leave its files alone.
+        if (_updateBusy) return;
+        Updater.CleanUp();
+        if (!Settings.AutoUpdate) return;
+        AvailableUpdate? found = null;
+        var installed = await UpdateAsync(update =>
+        {
+            found = update;
+            return true;
+        }, restartNow: false).ConfigureAwait(true);
+        if (!installed && found is not null && _notifiedVersion != found.Version)
+        {
+            _notifiedVersion = found.Version;
+            UpdateFailed?.Invoke(found);
+        }
+    }
+
+    private void SetUpdateStatus(string status)
+    {
+        UpdateStatus = status;
+        Log.Info($"Update: {status}");
+        Changed?.Invoke();
+    }
+
+    private static bool IsUpdateError(Exception e) =>
+        e is HttpRequestException or OperationCanceledException or JsonException or KeyNotFoundException
+            or InvalidOperationException or IOException or InvalidDataException or UnauthorizedAccessException;
 
     private void Push()
     {

@@ -17,6 +17,10 @@ Waiting mode was measured after a 60 s warm-up, in game after 30 s.
 cycling four presences, with Discord running and an unregistered application ID (so the
 companion also retried the Discord handshake every 60 s).
 
+The update check (a minute after start, then every 6 hours) loads .NET's HTTPS stack once, which
+adds about 3.5 MB of private memory for the rest of the run (measured with the same runtime in a
+console test). Turning off *Install updates automatically* avoids it.
+
 Startup: 150–330 ms from process start to the first log line (self-contained build; the higher value
 was the first, cold start).
 

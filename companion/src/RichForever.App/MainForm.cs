@@ -10,12 +10,12 @@ internal sealed class MainForm : Form
     private const string SetupGuide = "https://github.com/clintgalendez/richforever/blob/main/docs/DISCORD_SETUP.md";
 
     private readonly CompanionController _controller;
-    private readonly Label _game = Value(), _discord = Value(), _character = Value(), _presence = Value(), _error = Value(), _performance = Value();
+    private readonly Label _game = Value(), _discord = Value(), _character = Value(), _presence = Value(), _error = Value(), _performance = Value(), _update = Value();
     private readonly TextBox _applicationId = new() { Width = 220, PlaceholderText = "RichForever (default)" };
     private readonly CheckBox _pause = Check("Pause presence"), _hideName = Check("Hide character name"), _hideTime = Check("Hide session time"),
         _hideZone = Check("Hide zone and map"), _hideInstance = Check("Hide dungeon and raid details"), _stats = Check("Show health, power and XP (also enable in the addon)"),
         _group = Check("Show group size"), _combat = Check("Show when in combat"), _startup = Check("Start RichForever when Windows starts"),
-        _exit = Check("Exit RichForever when WoW Forever closes");
+        _exit = Check("Exit RichForever when WoW Forever closes"), _autoUpdate = Check("Install updates automatically");
     private readonly RadioButton _whenGame = new() { Text = "Connect to Discord only while WoW Forever runs", AutoSize = true },
         _always = new() { Text = "Connect to Discord as soon as RichForever starts", AutoSize = true };
     private readonly System.Windows.Forms.Timer _refresh = new() { Interval = 1000 };
@@ -42,10 +42,11 @@ internal sealed class MainForm : Form
         AddRow(status, "Presence", _presence);
         AddRow(status, "Last error", _error);
         AddRow(status, "Performance", _performance);
+        AddRow(status, "Updates", _update);
 
         var idRow = new FlowLayoutPanel { AutoSize = true, WrapContents = false, Margin = Padding.Empty };
         var guide = new LinkLabel { Text = "Use your own Discord app (optional)", AutoSize = true, Margin = new Padding(8, 6, 0, 0) };
-        guide.LinkClicked += (_, _) => Open(SetupGuide);
+        guide.LinkClicked += (_, _) => Shell.Open(SetupGuide);
         idRow.Controls.AddRange([_applicationId, guide]);
 
         var settings = Table();
@@ -53,13 +54,14 @@ internal sealed class MainForm : Form
         AddRow(settings, "Privacy", Stack(_pause, _hideName, _hideTime, _hideZone, _hideInstance));
         AddRow(settings, "Show", Stack(_stats, _group, _combat));
         AddRow(settings, "Startup", Stack(_startup, _whenGame, _always, _exit));
+        AddRow(settings, "Updates", Stack(_autoUpdate));
 
         var save = new Button { Text = "Save", AutoSize = true };
         var close = new Button { Text = "Close", AutoSize = true };
         var logs = new LinkLabel { Text = "Open log folder", AutoSize = true, Margin = new Padding(0, 8, 24, 0) };
         save.Click += (_, _) => Save();
         close.Click += (_, _) => Close();
-        logs.LinkClicked += (_, _) => Open(AppPaths.LogDirectory);
+        logs.LinkClicked += (_, _) => Shell.Open(AppPaths.LogDirectory);
         var buttons = new FlowLayoutPanel { AutoSize = true, FlowDirection = FlowDirection.RightToLeft, Dock = DockStyle.Fill };
         buttons.Controls.AddRange([close, save, logs]);
         AcceptButton = save;
@@ -103,6 +105,7 @@ internal sealed class MainForm : Form
         _whenGame.Checked = s.DiscordMode == DiscordConnectMode.WhenGameRunning;
         _always.Checked = s.DiscordMode == DiscordConnectMode.Always;
         _exit.Checked = s.ExitWhenGameCloses;
+        _autoUpdate.Checked = s.AutoUpdate;
     }
 
     private void Save()
@@ -126,6 +129,7 @@ internal sealed class MainForm : Form
         s.StartWithWindows = _startup.Checked;
         s.DiscordMode = _always.Checked ? DiscordConnectMode.Always : DiscordConnectMode.WhenGameRunning;
         s.ExitWhenGameCloses = _exit.Checked;
+        s.AutoUpdate = _autoUpdate.Checked;
         _controller.ApplySettings(s);
         LoadSettings(_controller.Settings);
     }
@@ -140,6 +144,7 @@ internal sealed class MainForm : Form
         _presence.Text = c.Settings.PausePresence ? "Paused" : c.CurrentActivity is null ? "Nothing shown"
             : string.Join(Environment.NewLine, new[] { c.CurrentActivity.Details, c.CurrentActivity.State, c.CurrentActivity.Assets?.LargeText, c.CurrentActivity.Assets?.SmallText }.Where(t => t is not null));
         _error.Text = c.LastError ?? "None";
+        _update.Text = $"Version {TrayApplication.Version}. {c.UpdateStatus}";
 
         using var process = Process.GetCurrentProcess();
         var now = DateTime.UtcNow;
@@ -159,19 +164,6 @@ internal sealed class MainForm : Form
         var who = string.Join(" ", new[] { s.Name, s.Level is int l ? $"level {l}" : null, s.RaceName, s.ClassName ?? s.ClassToken }.Where(t => t is not null));
         var where = s.Instance == InstanceKind.None ? s.Zone : $"{s.InstanceName ?? "unknown instance"} ({s.Instance})";
         return $"{who}{Environment.NewLine}{where} (map {s.MapId?.ToString(CultureInfo.InvariantCulture) ?? "?"})";
-    }
-
-    private static void Open(string target)
-    {
-        try
-        {
-            Directory.CreateDirectory(AppPaths.LogDirectory);
-            Process.Start(new ProcessStartInfo(target) { UseShellExecute = true })?.Dispose();
-        }
-        catch (Exception e) when (e is System.ComponentModel.Win32Exception or IOException)
-        {
-            Log.Warn($"Could not open {target}: {e.Message}");
-        }
     }
 
     private static Label Value() => new() { AutoSize = true, MaximumSize = new Size(520, 0), Margin = new Padding(3, 3, 3, 6) };
