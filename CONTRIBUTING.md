@@ -34,8 +34,11 @@ output from different places in the live verification issue.
 
 ## Adding zones and instances
 
-Add the entry to `companion/assets/catalog.json` with the IDs from `/rfor debug`, run
-`python scripts/generate_assets.py`, and commit the catalog and the new image. Artwork must be your
-own or openly licensed; no Blizzard art.
+Add the entry to `companion/assets/catalog.json` with the IDs from `/rfor debug`, give the key a
+source in the `ART` table of `scripts/build_assets.py`, run `python scripts/build_assets.py`, and commit
+the catalog, the script, `companion/assets/SOURCES.md` and the new image. Prefer, in this order: the
+WoW Forever client's own art (loading screens, icons), official Blizzard art (art books, trading card
+and Hearthstone art), then good in-game screenshots. Every source must be credited, which the script
+does for you.
 
 By contributing you agree that your contributions are licensed under the [MIT License](LICENSE).

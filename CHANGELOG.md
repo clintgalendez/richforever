@@ -6,6 +6,14 @@ All notable changes are documented here. The format follows
 
 ## [Unreleased]
 
+### Changed
+
+- The Discord artwork is now official World of Warcraft art instead of generated cards: the WoW
+  Forever logo while in menus, WoW Forever and classic loading screens for instances, battlegrounds,
+  Zephras Isle and activity badges, the game's own class icons, and official art and screenshots for
+  every zone. `scripts/build_assets.py` replaces `scripts/generate_assets.py` and credits each image in
+  `companion/assets/SOURCES.md`.
+
 ## [0.1.0-beta.3] - 2026-11-16
 
 The companion now keeps itself up to date. Coming from beta.1 or beta.2, download this version by

@@ -42,7 +42,7 @@ foreach ($flavour in "self-contained", "framework-dependent") {
 New-Zip (Join-Path $stage "self-contained") "RichForever-$Version-win-x64.zip"
 New-Zip (Join-Path $stage "framework-dependent") "RichForever-$Version-win-x64-framework-dependent.zip"
 
-# Original Rich Presence artwork for your own Discord application.
+# Rich Presence artwork, for people who use their own Discord application.
 New-Zip (Join-Path $root "companion/assets/discord") "RichForever-discord-assets-$Version.zip"
 
 Remove-Item $stage -Recurse -Force
