@@ -21,7 +21,7 @@ docs/                   documentation
 - [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0).
 - Lua 5.1 and [luacheck](https://github.com/lunarmodules/luacheck) (Ubuntu:
   `sudo apt-get install lua5.1 lua-check`; Windows: LuaBinaries 5.1 and LuaRocks, or WSL).
-- Python 3 with Pillow, only to regenerate artwork (`python -m pip install pillow`).
+- Python 3 with Pillow, only to rebuild artwork (`python -m pip install pillow`).
 
 ## Addon
 
@@ -87,13 +87,18 @@ samples CPU and memory of the running companion. Results are recorded in
 ## Artwork
 
 ```sh
-python scripts/generate_assets.py
+python scripts/build_assets.py
 ```
 
-regenerates `companion/assets/discord/*.png` and `companion/src/RichForever.App/richforever.ico`
-from `companion/assets/catalog.json`. To add a zone or instance: add a catalog entry with a new
-`key`, `names` and IDs (from `/rfor debug`), run the script, and commit both. A test checks that
-every catalog key has an image.
+downloads official World of Warcraft artwork and rebuilds `companion/assets/discord/*.png` (512×512)
+and the credits in `companion/assets/SOURCES.md`. The `ART` table in the script names each key's
+source and crop: a WoW Forever client file by file data ID (served by
+[wago.tools](https://wago.tools/files), which tracks the `wowf` build) or an image on
+[warcraft.wiki.gg](https://warcraft.wiki.gg). To add a zone or instance: add a catalog entry with a new
+`key`, `names` and IDs (from `/rfor debug`), add the key to `ART`, run the script, and commit all
+three. The script refuses to run while a catalog key has no source, and a test checks that every key
+has an image. The app icon (`richforever.ico`) and `docs/logo.png` are the original RichForever
+emblem and are not generated.
 
 ## Packaging
 

@@ -35,6 +35,9 @@ That is enough for text presence. Images need one more step.
 4. Optionally set `logo.png` as the application icon.
 5. New assets can take several minutes to become visible to Discord clients.
 
+To replace artwork, delete the old asset in the portal first and then upload the new file with the
+same name; Discord keeps the first asset when two share a key.
+
 You do not have to upload everything. Missing art simply shows no image for that slot; to avoid
 that, remove the entries you did not upload from a custom catalog (below).
 
@@ -67,11 +70,14 @@ media proxy. RichForever itself never downloads images.
    and `in=` (instance name).
 2. Add an entry to the catalog with a new key.
 3. Upload an image with that key, or for contributions to this repository add the entry to
-   `companion/assets/catalog.json` and run `python scripts/generate_assets.py` (see
-   [DEVELOPMENT.md](DEVELOPMENT.md)).
+   `companion/assets/catalog.json`, give it a source in `scripts/build_assets.py` and run the script
+   (see [DEVELOPMENT.md](DEVELOPMENT.md)).
 
 ## Branding notes
 
-The artwork in this repository is original. Do not upload Blizzard game art or logos to an
-application you distribute unless you have the rights to do so, and follow Discord's
+The artwork is official World of Warcraft art by Blizzard Entertainment, credited in
+[`companion/assets/SOURCES.md`](../companion/assets/SOURCES.md). RichForever uses it because the
+project is free and non-commercial, as other WoW fan addons do; it is not covered by RichForever's MIT
+license. If you build on it, keep your project non-commercial, do not suggest that Blizzard endorses
+it, and follow Discord's
 [Developer Terms of Service](https://support-dev.discord.com/hc/en-us/articles/8562894815383).
