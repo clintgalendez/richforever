@@ -98,7 +98,7 @@ every catalog key has an image.
 ## Packaging
 
 ```powershell
-pwsh ./scripts/package.ps1 -Version 0.1.0-beta.2
+pwsh ./scripts/package.ps1 -Version 0.1.0-beta.3
 ```
 
 writes the release ZIPs and `SHA256SUMS.txt` to `dist/`.

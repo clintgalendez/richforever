@@ -6,6 +6,11 @@ All notable changes are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.1.0-beta.3] - 2026-11-16
+
+The companion now keeps itself up to date. Coming from beta.1 or beta.2, download this version by
+hand once; later versions install themselves.
+
 ### Added
 
 - Automatic updates for the companion (#32): it checks GitHub Releases a minute after start and
@@ -13,7 +18,7 @@ All notable changes are documented here. The format follows
   waiting until WoW Forever closes if you are playing. *Install updates automatically* (on by default)
   turns it off; tray → *Check for updates…* checks on demand. Prerelease builds also receive
   prereleases. This is RichForever's first network request of its own; see
-  [docs/PRIVACY.md](docs/PRIVACY.md#update-checks).
+  [docs/PRIVACY.md](https://github.com/clintgalendez/richforever/blob/main/docs/PRIVACY.md#update-checks).
 
 ## [0.1.0-beta.2] - 2026-11-16
 
@@ -56,6 +61,7 @@ client; the addon still needs verification in the live WoW Forever client.
   review), CodeQL, Dependabot, and a tag-driven release workflow with checksums and provenance
   attestations.
 
-[Unreleased]: https://github.com/clintgalendez/richforever/compare/v0.1.0-beta.2...HEAD
+[Unreleased]: https://github.com/clintgalendez/richforever/compare/v0.1.0-beta.3...HEAD
+[0.1.0-beta.3]: https://github.com/clintgalendez/richforever/compare/v0.1.0-beta.2...v0.1.0-beta.3
 [0.1.0-beta.2]: https://github.com/clintgalendez/richforever/compare/v0.1.0-beta.1...v0.1.0-beta.2
 [0.1.0-beta.1]: https://github.com/clintgalendez/richforever/releases/tag/v0.1.0-beta.1
