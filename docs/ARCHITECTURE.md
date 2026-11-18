@@ -170,6 +170,11 @@ reuses the stored value (if under 12 hours old), so reloading the UI does not re
 | `party` | Group size, e.g. 3 of 5 (optional) |
 | `buttons` | Up to two https links from settings |
 
+`DetailsTemplate` and `StateTemplate` in the settings replace `details` and `state` with the user's
+own text. `{placeholders}` are filled from the snapshot after the privacy rules; separators and
+brackets left around a blank value are removed, unknown placeholders stay as typed, and a line that
+comes out empty falls back to the default.
+
 Text is trimmed to Discord's 128-character limit and fields shorter than 2 characters are omitted.
 
 ## Assets

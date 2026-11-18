@@ -38,6 +38,8 @@ Inside Stratholme  (3 of 5)
 - Group size ("3 of 5"), resting, dead and away states; optional combat state.
 - Optional health, power and experience percentages.
 - Privacy switches: pause, hide name, hide session time, hide zone and map, hide instance details.
+- Your own wording for the presence lines, with placeholders such as `{name}`, `{class}` and
+  `{location}`, in any language.
 - Tray app with a waiting mode: when WoW Forever is not running it checks for the game every few
   seconds and does nothing else. No Discord connection until the game starts (configurable).
 - Start with Windows (per user, no administrator rights), exit when the game closes, reconnects to
@@ -98,6 +100,11 @@ Full guide: [docs/INSTALLATION.md](docs/INSTALLATION.md). In short:
 - **Tray icon**: right-click for status, *Open RichForever…*, *Connect to Discord*, *Pause presence*,
   *Check for updates…*, *Open log folder* and *Exit*. Double-click opens the window.
 - **Window**: live status (game, Discord, character, presence, errors, CPU and memory) and settings.
+- **Custom text**: in the window's *Text* row, type your own details and state lines, for example
+  `{name}, {race} {class} de nivel {level}` and `Explorando {location}`. Placeholders: `{name}`
+  `{level}` `{race}` `{class}` `{faction}` `{zone}` `{subzone}` `{location}` (zone, or instance inside
+  one) `{instance}` `{difficulty}`, and `{character}` / `{activity}` for the default lines. Privacy
+  switches still apply; a line that ends up empty falls back to the default.
 - **In game**: `/rfor status`, `/rfor on|off`, `/rfor name on|off`, `/rfor stats on|off`, `/rfor debug`,
   or *Options → AddOns → RichForever*.
 

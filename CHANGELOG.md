@@ -6,6 +6,12 @@ All notable changes are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+
+- Custom presence text (#42): the window's *Text* row replaces the details and state lines with your
+  own wording, using placeholders such as `{name}`, `{class}`, `{location}` and `{activity}`. Privacy
+  switches still apply, and a line that comes out empty falls back to the default.
+
 ## [1.0.0] - 2026-11-18
 
 First stable release. The addon has been verified in the live WoW Forever client (#19). Installed

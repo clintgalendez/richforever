@@ -154,6 +154,38 @@ public class PresenceBuilderTests
     }
 
     [Fact]
+    public void Templates_replace_the_built_in_lines()
+    {
+        var settings = new AppSettings { DetailsTemplate = "{name} – {class} niv. {level} ({faction})", StateTemplate = "{activity} · {subzone}" };
+
+        var a = Build(Paladin, settings);
+
+        Assert.Equal("Archer – Paladin niv. 60 (Alliance)", a.Details);
+        Assert.Equal("Exploring Eastern Plaguelands · Darrowshire", a.State);
+        Assert.Equal("Explorando Stratholme (Normal)", Build(Paladin with { Instance = InstanceKind.Dungeon, InstanceName = "Stratholme", Difficulty = "Normal" },
+            new AppSettings { StateTemplate = "Explorando {location} ({difficulty})" }).State);
+    }
+
+    [Fact]
+    public void Templates_respect_privacy_and_tidy_blank_values()
+    {
+        var settings = new AppSettings { HideCharacterName = true, HideZone = true, DetailsTemplate = "{name} · {race} · {class} <{subzone}>", StateTemplate = "{zone}" };
+
+        var a = Build(Paladin, settings);
+
+        Assert.Equal("Human · Paladin", a.Details);
+        Assert.Equal("Exploring the world", a.State);
+        Assert.DoesNotContain("Archer", a.ToJson(), StringComparison.Ordinal);
+        Assert.DoesNotContain("Darrowshire", a.ToJson(), StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void Unknown_placeholders_stay_visible()
+    {
+        Assert.Equal("{nmae} the Paladin", Build(Paladin, new AppSettings { DetailsTemplate = "{nmae} the {class}" }).Details);
+    }
+
+    [Fact]
     public void Missing_data_degrades_gracefully()
     {
         var a = Build(new GameSnapshot());

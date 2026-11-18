@@ -71,6 +71,8 @@ public class SettingsTests : IDisposable
               "DiscordMode": 7,
               "GameProcessNames": ["Wow", "wow", "bad name!", ""],
               "Buttons": [ { "Label": "x", "Url": "javascript:alert(1)" } ],
+              "DetailsTemplate": "  {name}\n{level}  ",
+              "StateTemplate": null,
             }
             """);
 
@@ -83,6 +85,9 @@ public class SettingsTests : IDisposable
         Assert.Equal(DiscordConnectMode.WhenGameRunning, s.DiscordMode);
         Assert.Equal(["Wow"], s.GameProcessNames);
         Assert.Empty(s.Buttons);
+        Assert.Equal("{name}{level}", s.DetailsTemplate);
+        Assert.Equal("", s.StateTemplate);
+        Assert.Equal(AppSettings.MaxTemplate, new AppSettings { StateTemplate = new string('x', 999) }.Normalize().StateTemplate.Length);
     }
 
     [Theory]
