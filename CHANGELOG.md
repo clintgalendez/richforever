@@ -14,6 +14,14 @@ All notable changes are documented here. The format follows
 - *Time dungeon, raid and battleground runs* (#43): inside an instance the elapsed timer counts from
   when you entered it instead of from login. It restarts on every entry, including after a corpse run.
 - *Clear presence while away* (#44): nothing is shown on Discord while your character is flagged away.
+- Realm and guild name (#45): turn on *Share realm and guild name* in the addon (`/rfor guild on`, off
+  by default) and use `{realm}` and `{guild}` in your presence text. Not shown anywhere else, and
+  hidden along with your character name.
+
+### Changed
+
+- The addon leaves out a field that would overflow the strip instead of not updating it, so very
+  long localized names can no longer stop the presence from updating.
 
 ## [1.0.0] - 2026-11-18
 

@@ -84,6 +84,10 @@ UTF-8 text, one `key=value` per line, in this order. Every field is optional exc
 | `pt` | Power token (`MANA`, `RAGE`…) | 12 bytes | token |
 | `fl` | Flags: `c` combat, `d` dead, `r` resting, `a` away | 12 bytes | known letters only |
 | `ss` | Session start, Unix seconds | int | 2000–2100; used only if within the last 3 days |
+| `rl` / `gu` | Realm / guild name (only with *Share realm and guild name*) | 32 / 48 bytes | text ≤ 32 / ≤ 48 |
+
+Fields are written in the order above. A field that would push the payload past 468 bytes is left
+out, so the optional tail (`rl`, `gu`) is dropped first and the strip never fails to update.
 
 Structural errors (invalid UTF-8, malformed or duplicate lines, control characters, oversize) reject
 the whole payload. An invalid value in a known field drops just that field. Unknown keys are ignored

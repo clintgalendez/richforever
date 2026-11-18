@@ -32,6 +32,8 @@ Protocol.MAX_PAYLOAD = 468
 Protocol.MAGIC = { 48, 12, 3, 63, 42, 21, 0 }
 
 -- Ordered field list: { key, max text bytes } or { key, nil, max integer }.
+-- Fields are written in this order and one that would overflow the payload is
+-- left out, so the least important fields come last.
 local FIELDS = {
 	{ "v", nil, 63 },           -- protocol version
 	{ "n", 36 },                -- character name
@@ -57,6 +59,8 @@ local FIELDS = {
 	{ "xp", nil, 100 },         -- experience percent
 	{ "fl", 12 },               -- flags: c combat, d dead, r resting, a away
 	{ "ss", nil, 9999999999 },  -- session start, epoch seconds
+	{ "rl", 32 },               -- realm (opt-in)
+	{ "gu", 48 },               -- guild name (opt-in)
 }
 Protocol.FIELDS = FIELDS
 
@@ -85,20 +89,23 @@ local function integer(value, maximum)
 	return string.format("%.0f", value)
 end
 
--- Turn a state table into the payload string. Unknown keys are ignored.
+-- Turn a state table into the payload string. Unknown keys are ignored, and a
+-- field that would push the payload past MAX_PAYLOAD is left out.
 function Protocol.Serialize(state)
-	local lines = {}
+	local lines, size = {}, -1
 	for i = 1, #FIELDS do
 		local key, limit, maximum = FIELDS[i][1], FIELDS[i][2], FIELDS[i][3]
 		local value = state[key]
 		if value ~= nil then
 			if limit then value = Protocol.Clean(value, limit) else value = integer(value, maximum) end
-			if value then lines[#lines + 1] = key .. "=" .. value end
+			local line = value and key .. "=" .. value
+			if line and size + 1 + #line <= Protocol.MAX_PAYLOAD then
+				lines[#lines + 1] = line
+				size = size + 1 + #line
+			end
 		end
 	end
-	local payload = concat(lines, "\n")
-	if #payload > Protocol.MAX_PAYLOAD then return nil, "payload too large" end
-	return payload
+	return concat(lines, "\n")
 end
 
 function Protocol.Checksum(text)

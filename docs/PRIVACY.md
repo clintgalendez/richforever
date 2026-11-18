@@ -7,9 +7,11 @@ RichForever is built to keep your data on your PC.
 The addon reads only what it needs for presence: character name, level, race, class, faction, sex,
 zone, subzone, map ID, instance name/type/ID/difficulty/size, group size, combat/dead/resting/away
 flags and the time you logged in. Health, power and experience percentages are read only if you turn
-on *Share health, power and experience*.
+on *Share health, power and experience*. Realm and guild name are read only if you turn on *Share realm
+and guild name* (and share your character name); the companion shows them only where you put
+`{realm}` or `{guild}` in your own presence text.
 
-It does not read your account name, realm, guild, chat, friends, inventory, gold or anything else.
+It does not read your account name, chat, friends, inventory, gold or anything else.
 
 ## Where it goes
 
@@ -50,7 +52,8 @@ applies. Turn the setting off and the companion makes no network requests unless
 | Control | Effect |
 | --- | --- |
 | `/rfor off` (in game) | The addon stops drawing; nothing reaches the companion |
-| `/rfor name off` (in game) | Your name never leaves the game |
+| `/rfor name off` (in game) | Your name never leaves the game (nor do realm and guild) |
+| `/rfor guild off` (default) | Realm and guild name are not read |
 | `/rfor stats off` (default) | Health, power and XP are not read |
 | Pause presence | Discord presence is cleared |
 | Hide character name | Name not shown on Discord |

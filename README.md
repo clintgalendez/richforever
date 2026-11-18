@@ -105,9 +105,9 @@ Full guide: [docs/INSTALLATION.md](docs/INSTALLATION.md). In short:
 - **Custom text**: in the window's *Text* row, type your own details and state lines, for example
   `{name}, {race} {class} de nivel {level}` and `Explorando {location}`. Placeholders: `{name}`
   `{level}` `{race}` `{class}` `{faction}` `{zone}` `{subzone}` `{location}` (zone, or instance inside
-  one) `{instance}` `{difficulty}`, and `{character}` / `{activity}` for the default lines. Privacy
+  one) `{instance}` `{difficulty}`, `{realm}` `{guild}` (after `/rfor guild on` in the game), and `{character}` / `{activity}` for the default lines. Privacy
   switches still apply; a line that ends up empty falls back to the default.
-- **In game**: `/rfor status`, `/rfor on|off`, `/rfor name on|off`, `/rfor stats on|off`, `/rfor debug`,
+- **In game**: `/rfor status`, `/rfor on|off`, `/rfor name on|off`, `/rfor guild on|off`, `/rfor stats on|off`, `/rfor debug`,
   or *Options → AddOns → RichForever*.
 
 ### Startup options

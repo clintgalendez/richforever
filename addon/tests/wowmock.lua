@@ -122,6 +122,8 @@ end
 function issecretvalue(value) return mock.secret[value] == true end
 function GetPhysicalScreenSize() return mock.physical[1], mock.physical[2] end
 function UnitName() return w("name"), nil end
+function GetRealmName() return w("realm", "") end
+function GetGuildInfo() return w("guild"), w("guild") and "Member", w("guild") and 0 end
 function UnitLevel() return w("level", 1) end
 function UnitClass() return w("className"), w("classFile"), w("classID") end
 function UnitRace() return w("raceName"), w("raceFile"), w("raceID") end

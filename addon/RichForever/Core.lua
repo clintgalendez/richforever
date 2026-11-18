@@ -3,7 +3,7 @@
 local addonName, ns = ...
 local P, State, Strip = ns.Protocol, ns.State, ns.Strip
 
-local DEFAULTS = { enabled = true, shareName = true, shareStats = false }
+local DEFAULTS = { enabled = true, shareName = true, shareGuild = false, shareStats = false }
 local SESSION_RESUME_LIMIT = 12 * 3600 -- seconds a /reload may reuse a stored session start
 local STATS_DELAY = 5                   -- health/power events refresh at most this often
 local EVENT_DELAY = 0.25
@@ -80,7 +80,7 @@ local QUICK_EVENTS = {
 	"PLAYER_ENTERING_WORLD", "ZONE_CHANGED", "ZONE_CHANGED_INDOORS", "ZONE_CHANGED_NEW_AREA",
 	"PLAYER_LEVEL_UP", "PLAYER_REGEN_DISABLED", "PLAYER_REGEN_ENABLED", "PLAYER_DEAD", "PLAYER_ALIVE",
 	"PLAYER_UNGHOST", "PLAYER_UPDATE_RESTING", "PLAYER_FLAGS_CHANGED", "GROUP_ROSTER_UPDATE",
-	"PLAYER_DIFFICULTY_CHANGED", "UPDATE_INSTANCE_INFO",
+	"PLAYER_DIFFICULTY_CHANGED", "UPDATE_INSTANCE_INFO", "PLAYER_GUILD_UPDATE",
 }
 local STAT_EVENTS = { "UNIT_HEALTH", "UNIT_MAXHEALTH", "UNIT_POWER_UPDATE", "UNIT_MAXPOWER", "UNIT_DISPLAYPOWER", "PLAYER_XP_UPDATE" }
 local quick = {}
@@ -120,7 +120,8 @@ local function onOff(value) return value and "on" or "off" end
 
 local function status()
 	local c = ns.config
-	say(("sharing %s, character name %s, health/power/XP %s."):format(onOff(c.enabled), onOff(c.shareName), onOff(c.shareStats)))
+	say(("sharing %s, character name %s, realm and guild %s, health/power/XP %s."):format(
+		onOff(c.enabled), onOff(c.shareName), onOff(c.shareName and c.shareGuild), onOff(c.shareStats)))
 	if not c.enabled then
 		say("the companion receives nothing while sharing is off.")
 	elseif ns.lastPayload then
@@ -138,7 +139,7 @@ local function debugDump()
 	for line in ns.lastPayload:gmatch("[^\n]+") do print("  " .. line) end
 end
 
-local TOGGLES = { name = "shareName", stats = "shareStats" }
+local TOGGLES = { name = "shareName", guild = "shareGuild", stats = "shareStats" }
 
 SLASH_RICHFOREVER1 = "/richforever"
 SLASH_RICHFOREVER2 = "/rfor"
@@ -157,7 +158,7 @@ SlashCmdList.RICHFOREVER = function(input)
 	elseif command == "options" or command == "config" then
 		if ns.OpenOptions then ns.OpenOptions() end
 	else
-		say("commands: /rfor status | on | off | name on|off | stats on|off | debug | options")
+		say("commands: /rfor status | on | off | name on|off | guild on|off | stats on|off | debug | options")
 	end
 end
 

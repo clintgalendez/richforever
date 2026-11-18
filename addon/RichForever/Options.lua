@@ -10,6 +10,8 @@ local checkboxes = {}
 local OPTIONS = {
 	{ key = "enabled", label = "Share presence with the RichForever companion", tip = "Turn off to stop sharing anything. Same as /rfor off." },
 	{ key = "shareName", label = "Share character name", tip = "When off, your name never leaves the game." },
+	{ key = "shareGuild", label = "Share realm and guild name", tip = "Off by default and needs the character name to be shared. "
+		.. "The companion shows them only if you use {realm} or {guild} in your own presence text." },
 	{ key = "shareStats", label = "Share health, power and experience", tip = "Lets the companion show stats if you enable them there too." },
 }
 

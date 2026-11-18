@@ -180,6 +180,21 @@ public class PresenceBuilderTests
     }
 
     [Fact]
+    public void Realm_and_guild_appear_only_through_templates_and_follow_the_name_switch()
+    {
+        var snapshot = Paladin with { Realm = "Zephras", Guild = "Forever Rich" };
+        var template = new AppSettings { DetailsTemplate = "{name} <{guild}> · {realm}" };
+
+        Assert.DoesNotContain("Zephras", Build(snapshot).ToJson(), StringComparison.Ordinal);
+        Assert.DoesNotContain("Forever Rich", Build(snapshot).ToJson(), StringComparison.Ordinal);
+        Assert.Equal("Archer <Forever Rich> · Zephras", Build(snapshot, template).Details);
+        Assert.Equal("Archer", Build(Paladin, template).Details);
+
+        template.HideCharacterName = true;
+        Assert.Equal("Level 60 Human Paladin", Build(snapshot, template).Details);
+    }
+
+    [Fact]
     public void Unknown_placeholders_stay_visible()
     {
         Assert.Equal("{nmae} the Paladin", Build(Paladin, new AppSettings { DetailsTemplate = "{nmae} the {class}" }).Details);
