@@ -94,6 +94,27 @@ Compression decompresses the bundle into private memory, so it is not used.
   on opt-out and `--uninstall`). Task Scheduler process-start triggers need admin and auditing, so
   "start when the game starts" is approximated by autostart plus a 5 s waiting-mode check.
 
+## Similar projects
+
+Reviewed in November 2026 to find features worth adopting.
+
+| Project | How it works | Notable features |
+| --- | --- | --- |
+| [CraftPresence](https://www.curseforge.com/wow/addons/craftpresence) ([source](https://gitlab.com/CDAGaming/CraftPresence-Wow-Edition)) | Addon draws coloured squares for a few seconds after events; a Python script (`pypresence`, Pillow, pywin32) reads them. Setup needs Python, `pip` and a script kept running | About 147K CurseForge downloads; lists WoW Forever among its flavours. Placeholder templates for every field, custom events and labels, realm, title, item level, Mythic+ data, instance lockout progress, minimap button |
+| [wow-discord-rich-presence](https://github.com/wodim/wow-discord-rich-presence) | The original coloured squares + Python design CraftPresence grew from; manual width calibration | Shows text typed with `/ipc` |
+| [wow-drp](https://github.com/maxine4j/wow-drp) | Addon plus Python script | Small GPL-3.0 project |
+| [witchcraft](https://github.com/Geraldlol/witchcraft) | WoW Forever pixel strip with calibration, read only while the game is in the foreground | Not a presence tool: links the game to AI coding assistants |
+| [Dalamud.RichPresence](https://github.com/Bronya-Rand/Dalamud.RichPresence) (FFXIV) | In-process plugin | Template per Discord field, reset timer on zone change, hide when AFK, world and free company tag, login queue position |
+
+Adopted from this review: custom presence text with placeholders (#42), an optional timer per
+dungeon, raid or battleground run (#43), clearing the presence while away (#44), and opt-in realm and
+guild name (#45). Boss progress inside raids (#46) waits on live-client checks. Retail-only
+placeholders (Mythic+ keystones, covenants, renown) do not apply to Forever's classic-era content.
+
+Where RichForever already differs: one download with no Python or command line, a strip that stays
+up so no update is missed, no calibration step, a checksum on every frame, automatic updates, and
+artwork for every known zone and instance.
+
 ## GitHub Actions
 
 Followed GitHub's [security hardening guide](https://docs.github.com/actions/security-for-github-actions/security-guides/security-hardening-for-github-actions):
