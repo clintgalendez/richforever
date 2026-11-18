@@ -6,6 +6,16 @@ All notable changes are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-11-18
+
+First stable release. The addon has been verified in the live WoW Forever client (#19). Installed
+beta companions update to this version by themselves; from now on they receive stable releases only.
+
+### Added
+
+- The addon is published on [CurseForge](https://www.curseforge.com/wow/addons/richforever); every
+  release uploads it automatically (#38).
+
 ### Changed
 
 - The Discord artwork is now official World of Warcraft art instead of generated cards: the WoW
@@ -69,7 +79,8 @@ client; the addon still needs verification in the live WoW Forever client.
   review), CodeQL, Dependabot, and a tag-driven release workflow with checksums and provenance
   attestations.
 
-[Unreleased]: https://github.com/clintgalendez/richforever/compare/v0.1.0-beta.3...HEAD
+[Unreleased]: https://github.com/clintgalendez/richforever/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/clintgalendez/richforever/compare/v0.1.0-beta.3...v1.0.0
 [0.1.0-beta.3]: https://github.com/clintgalendez/richforever/compare/v0.1.0-beta.2...v0.1.0-beta.3
 [0.1.0-beta.2]: https://github.com/clintgalendez/richforever/compare/v0.1.0-beta.1...v0.1.0-beta.2
 [0.1.0-beta.1]: https://github.com/clintgalendez/richforever/releases/tag/v0.1.0-beta.1

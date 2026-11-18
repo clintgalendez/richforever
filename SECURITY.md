@@ -2,7 +2,7 @@
 
 ## Supported versions
 
-Only the latest release receives fixes while RichForever is in beta.
+Only the latest release receives fixes.
 
 ## Reporting a vulnerability
 
