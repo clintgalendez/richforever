@@ -47,9 +47,11 @@ Inside Stratholme  (3 of 5)
 
 ## Screenshots
 
-Planned: the Discord profile card and the companion window. Until then, the [artwork](companion/assets/discord) shows
-what the images on the profile look like: official World of Warcraft art, including WoW Forever's
-own logo and loading screens.
+<img src="docs/discord-presence.png" alt="RichForever on a Discord profile: World of Warcraft Forever, Archer, Level 23 Human Warlock, Exploring Ashenvale, 31:59 elapsed" width="342">
+
+A screenshot of the companion window is planned. All profile images are in
+[companion/assets/discord](companion/assets/discord): official World of Warcraft art, including
+WoW Forever's own logo and loading screens.
 
 ## How it works
 
