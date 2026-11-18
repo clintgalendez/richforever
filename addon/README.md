@@ -17,6 +17,7 @@ Requires WoW Forever (interface 16001) and the companion app.
 | `/rfor` or `/rfor status` | What is being shared |
 | `/rfor on`, `/rfor off` | Start or stop sharing (the coloured block disappears when off) |
 | `/rfor name on`, `/rfor name off` | Share your character name |
+| `/rfor guild on`, `/rfor guild off` | Share realm and guild name (off by default; needs the name) |
 | `/rfor stats on`, `/rfor stats off` | Share health, power and experience percentages |
 | `/rfor debug` | Print the exact data being shared |
 | `/rfor options` | Open the options panel (also under *Options → AddOns*) |

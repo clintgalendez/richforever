@@ -44,6 +44,8 @@ public sealed record GameSnapshot
     public bool IsResting { get; init; }
     public bool IsAway { get; init; }
     public DateTimeOffset? SessionStart { get; init; }
+    public string? Realm { get; init; }
+    public string? Guild { get; init; }
 }
 
 /// <summary>
@@ -161,6 +163,8 @@ public static partial class PayloadParser
             IsResting = flags.Contains('r', StringComparison.Ordinal),
             IsAway = flags.Contains('a', StringComparison.Ordinal),
             SessionStart = sessionStart,
+            Realm = Text("rl", 32),
+            Guild = Text("gu", 48),
         };
     }
 }

@@ -9,8 +9,8 @@ files["addon/RichForever"] = {
 		"RichForever_OnCompartmentClick", "SlashCmdList",
 	},
 	read_globals = {
-		"C_Map", "C_Timer", "CreateFrame", "GetInstanceInfo", "GetMaxPlayerLevel", "GetNumGroupMembers",
-		"GetPhysicalScreenSize", "GetRealZoneText", "GetSubZoneText", "GetTime", "IsInInstance", "IsResting",
+		"C_Map", "C_Timer", "CreateFrame", "GetGuildInfo", "GetInstanceInfo", "GetMaxPlayerLevel", "GetNumGroupMembers",
+		"GetPhysicalScreenSize", "GetRealmName", "GetRealZoneText", "GetSubZoneText", "GetTime", "IsInInstance", "IsResting",
 		"Settings", "UIParent", "UnitAffectingCombat", "UnitClass", "UnitFactionGroup", "UnitHealth",
 		"UnitHealthMax", "UnitIsAFK", "UnitIsDeadOrGhost", "UnitLevel", "UnitName", "UnitPower", "UnitPowerMax",
 		"UnitPowerType", "UnitRace", "UnitSex", "UnitXP", "UnitXPMax", "issecretvalue", "time",

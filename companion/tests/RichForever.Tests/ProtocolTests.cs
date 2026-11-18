@@ -141,6 +141,18 @@ public class PayloadParserTests
         Assert.True(s.InCombat);
         Assert.False(s.IsDead);
         Assert.Equal(DateTimeOffset.FromUnixTimeSeconds(1763200000), s.SessionStart);
+        Assert.Null(s.Realm);
+        Assert.Null(s.Guild);
+    }
+
+    [Fact]
+    public void Parses_opt_in_realm_and_guild()
+    {
+        var s = Parse("v=1\nrl=Zephras\ngu=Forever Rich", out _)!;
+
+        Assert.Equal("Zephras", s.Realm);
+        Assert.Equal("Forever Rich", s.Guild);
+        Assert.Null(Parse("v=1\ngu=" + new string('x', 49), out _)!.Guild);
     }
 
     [Theory]

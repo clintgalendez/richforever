@@ -90,6 +90,8 @@ public static partial class PresenceBuilder
         var text = Placeholder().Replace(template, m => m.Groups[1].Value switch
         {
             "name" => settings.HideCharacterName ? null : s.Name,
+            "realm" => settings.HideCharacterName ? null : s.Realm,
+            "guild" => settings.HideCharacterName ? null : s.Guild,
             "level" => s.Level?.ToString(CultureInfo.InvariantCulture),
             "race" => s.RaceName ?? s.RaceToken,
             "class" => ClassLabel(s),

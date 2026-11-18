@@ -55,6 +55,10 @@ function State.Collect(config, sessionStart)
 	local s = { v = ns.Protocol.VERSION, ss = sessionStart }
 
 	if config.shareName then s.n = text(call(UnitName, "player")) end
+	if config.shareName and config.shareGuild then
+		s.rl = text(call(GetRealmName))
+		s.gu = text(call(GetGuildInfo, "player"))
+	end
 	local level = number(call(UnitLevel, "player"))
 	if level and level > 0 then s.l = level end
 

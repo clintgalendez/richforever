@@ -60,7 +60,8 @@ internal sealed class MainForm : Form
             AutoSize = true,
             MaximumSize = new Size(520, 0),
             Text = "Your own wording for the two presence lines. Placeholders: {name} {level} {race} {class} {faction} {zone} {subzone} " +
-                "{location} {instance} {difficulty}, and {character} {activity} for the default lines. Leave empty for the default.",
+                "{location} {instance} {difficulty}, {realm} {guild} (turn on /rfor guild in the game), and {character} {activity} for the default lines. " +
+                "Leave empty for the default.",
         }));
         AddRow(settings, "Startup", Stack(_startup, _whenGame, _always, _exit));
         AddRow(settings, "Updates", Stack(_autoUpdate));
