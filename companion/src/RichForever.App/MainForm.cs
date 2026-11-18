@@ -14,7 +14,8 @@ internal sealed class MainForm : Form
     private readonly TextBox _applicationId = new() { Width = 220, PlaceholderText = "RichForever (default)" };
     private readonly TextBox _detailsTemplate = Template("Default: {character}"), _stateTemplate = Template("Default: {activity}");
     private readonly CheckBox _pause = Check("Pause presence"), _hideName = Check("Hide character name"), _hideTime = Check("Hide session time"),
-        _hideZone = Check("Hide zone and map"), _hideInstance = Check("Hide dungeon and raid details"), _stats = Check("Show health, power and XP (also enable in the addon)"),
+        _hideZone = Check("Hide zone and map"), _hideInstance = Check("Hide dungeon and raid details"),
+        _hideAway = Check("Clear presence while away"), _instanceTimer = Check("Time dungeon, raid and battleground runs"), _stats = Check("Show health, power and XP (also enable in the addon)"),
         _group = Check("Show group size"), _combat = Check("Show when in combat"), _startup = Check("Start RichForever when Windows starts"),
         _exit = Check("Exit RichForever when WoW Forever closes"), _autoUpdate = Check("Install updates automatically");
     private readonly RadioButton _whenGame = new() { Text = "Connect to Discord only while WoW Forever runs", AutoSize = true },
@@ -52,8 +53,8 @@ internal sealed class MainForm : Form
 
         var settings = Table();
         AddRow(settings, "Discord app", idRow);
-        AddRow(settings, "Privacy", Stack(_pause, _hideName, _hideTime, _hideZone, _hideInstance));
-        AddRow(settings, "Show", Stack(_stats, _group, _combat));
+        AddRow(settings, "Privacy", Stack(_pause, _hideName, _hideTime, _hideZone, _hideInstance, _hideAway));
+        AddRow(settings, "Show", Stack(_stats, _group, _combat, _instanceTimer));
         AddRow(settings, "Text", Stack(_detailsTemplate, _stateTemplate, new Label
         {
             AutoSize = true,
@@ -108,6 +109,8 @@ internal sealed class MainForm : Form
         _hideTime.Checked = s.HideSessionTime;
         _hideZone.Checked = s.HideZone;
         _hideInstance.Checked = s.HideInstance;
+        _hideAway.Checked = s.HideWhenAway;
+        _instanceTimer.Checked = s.TimeInstanceRuns;
         _stats.Checked = s.ShowStats;
         _group.Checked = s.ShowGroupSize;
         _combat.Checked = s.ShowCombat;
@@ -135,6 +138,8 @@ internal sealed class MainForm : Form
         s.HideSessionTime = _hideTime.Checked;
         s.HideZone = _hideZone.Checked;
         s.HideInstance = _hideInstance.Checked;
+        s.HideWhenAway = _hideAway.Checked;
+        s.TimeInstanceRuns = _instanceTimer.Checked;
         s.ShowStats = _stats.Checked;
         s.ShowGroupSize = _group.Checked;
         s.ShowCombat = _combat.Checked;

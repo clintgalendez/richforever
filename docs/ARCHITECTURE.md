@@ -164,7 +164,7 @@ reuses the stored value (if under 12 hours old), so reloading the UI does not re
 | Application name | "World of Warcraft Forever": RichForever's Discord application `1571656707078103191` (or your own) |
 | `details` | `Archer · Level 60 Human Paladin` (name optional) |
 | `state` | `Exploring Eastern Plaguelands`, `Resting in Goldshire`, `Inside Stratholme`, `In Warsong Gulch`, `Inside an instance`, `Dead in …`, `Away in …`, optional `In combat in …` |
-| `timestamps.start` | Session start → Discord shows "elapsed" |
+| `timestamps.start` | Session start → Discord shows "elapsed"; with *Time dungeon, raid and battleground runs*, inside an instance the time the companion first saw that instance (restarts on every entry) |
 | `assets.large_image` / `large_text` | Instance art → zone art → type badge → logo; `Dungeon: Stratholme (Normal)` or `Zone · Subzone` |
 | `assets.small_image` / `small_text` | Class icon; `Paladin · Alliance` plus optional `HP 85% · Mana 40% · XP 42%` |
 | `party` | Group size, e.g. 3 of 5 (optional) |

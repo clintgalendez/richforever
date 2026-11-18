@@ -34,10 +34,12 @@ Inside Stratholme  (3 of 5)
 - Character name, level, race, class and faction, with a class icon.
 - Current zone and subzone with zone artwork; known dungeons, raids and battlegrounds by name with
   their own artwork; a neutral "Inside an instance" when the client gives no name.
-- Session timer (time since you logged in this character, not lifetime `/played`).
+- Session timer (time since you logged in this character, not lifetime `/played`), or optionally the
+  time of the current dungeon, raid or battleground run.
 - Group size ("3 of 5"), resting, dead and away states; optional combat state.
 - Optional health, power and experience percentages.
-- Privacy switches: pause, hide name, hide session time, hide zone and map, hide instance details.
+- Privacy switches: pause, hide name, hide session time, hide zone and map, hide instance details,
+  clear presence while away.
 - Your own wording for the presence lines, with placeholders such as `{name}`, `{class}` and
   `{location}`, in any language.
 - Tray app with a waiting mode: when WoW Forever is not running it checks for the game every few

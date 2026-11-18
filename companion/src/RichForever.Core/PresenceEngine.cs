@@ -15,6 +15,8 @@ public sealed class PresenceEngine
     private byte[]? _lastPayload;
     private DateTimeOffset? _firstFrameAt;
     private DateTimeOffset? _missingSince;
+    private string? _instanceKey;
+    private DateTimeOffset? _instanceSince;
 
     public bool GameRunning { get; private set; }
     public GameSnapshot? Snapshot { get; private set; }
@@ -51,6 +53,12 @@ public sealed class PresenceEngine
         _lastPayload = payload.ToArray();
         LastPayloadError = null;
         _firstFrameAt ??= now;
+        var instanceKey = snapshot.Instance == InstanceKind.None ? null : $"{snapshot.Instance}|{snapshot.InstanceId}|{snapshot.InstanceName}";
+        if (instanceKey != _instanceKey)
+        {
+            _instanceKey = instanceKey;
+            _instanceSince = instanceKey is null ? null : now;
+        }
         var changed = snapshot != Snapshot;
         Snapshot = snapshot;
         return changed;
@@ -74,11 +82,16 @@ public sealed class PresenceEngine
         return _firstFrameAt;
     }
 
+    /// <summary>When the elapsed timer starts: the current instance run if chosen, else the session.</summary>
+    public DateTimeOffset? TimerStart(AppSettings settings, DateTimeOffset now) =>
+        settings.TimeInstanceRuns && Snapshot is { Instance: not InstanceKind.None } && _instanceSince is DateTimeOffset since ? since : SessionStart(now);
+
     public bool WantsDiscord(AppSettings settings) => GameRunning || settings.DiscordMode == DiscordConnectMode.Always;
 
     /// <summary>The activity to show, or null to clear it.</summary>
     public Activity? DesiredActivity(AppSettings settings, AssetCatalog catalog, DateTimeOffset now) =>
-        !GameRunning || settings.PausePresence ? null : PresenceBuilder.Build(Snapshot, settings, catalog, SessionStart(now), PartyId);
+        !GameRunning || settings.PausePresence || (settings.HideWhenAway && Snapshot?.IsAway == true) ? null
+            : PresenceBuilder.Build(Snapshot, settings, catalog, TimerStart(settings, now), PartyId);
 
     private void Reset()
     {
@@ -88,6 +101,8 @@ public sealed class PresenceEngine
         _lastPayload = null;
         _firstFrameAt = null;
         _missingSince = null;
+        _instanceKey = null;
+        _instanceSince = null;
     }
 
     private static string NewPartyId() => "rf-" + Guid.NewGuid().ToString("N");

@@ -11,6 +11,9 @@ All notable changes are documented here. The format follows
 - Custom presence text (#42): the window's *Text* row replaces the details and state lines with your
   own wording, using placeholders such as `{name}`, `{class}`, `{location}` and `{activity}`. Privacy
   switches still apply, and a line that comes out empty falls back to the default.
+- *Time dungeon, raid and battleground runs* (#43): inside an instance the elapsed timer counts from
+  when you entered it instead of from login. It restarts on every entry, including after a corpse run.
+- *Clear presence while away* (#44): nothing is shown on Discord while your character is flagged away.
 
 ## [1.0.0] - 2026-11-18
 

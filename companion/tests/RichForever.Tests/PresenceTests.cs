@@ -423,6 +423,52 @@ public class PresenceEngineTests
         Assert.Null(engine.DesiredActivity(new AppSettings { PausePresence = true }, AssetCatalog.LoadDefault(), Now));
     }
 
+    [Fact]
+    public void Away_can_clear_the_activity()
+    {
+        var engine = new PresenceEngine();
+        engine.GameStarted();
+        var settings = new AppSettings { HideWhenAway = true };
+        engine.OnPayload(World, Now);
+        Assert.NotNull(engine.DesiredActivity(settings, AssetCatalog.LoadDefault(), Now));
+
+        engine.OnPayload(Encoding.UTF8.GetBytes(Fixture.Payload("world") + "\nfl=a"), Now);
+        Assert.Null(engine.DesiredActivity(settings, AssetCatalog.LoadDefault(), Now));
+        Assert.Equal("Away in Eastern Plaguelands", engine.DesiredActivity(new AppSettings(), AssetCatalog.LoadDefault(), Now)!.State);
+    }
+
+    [Fact]
+    public void Instance_runs_can_have_their_own_timer()
+    {
+        var engine = new PresenceEngine();
+        engine.GameStarted();
+        var settings = new AppSettings { TimeInstanceRuns = true };
+        var session = DateTimeOffset.FromUnixTimeSeconds(1763200000);
+        var dungeon = Encoding.UTF8.GetBytes(Fixture.Payload("dungeon"));
+        var raid = Encoding.UTF8.GetBytes(Fixture.Payload("raid"));
+
+        engine.OnPayload(World, Now);
+        Assert.Equal(session, engine.TimerStart(settings, Now));
+
+        engine.OnPayload(dungeon, Now.AddMinutes(1));
+        Assert.Equal(session, engine.TimerStart(new AppSettings(), Now.AddMinutes(2)));
+        Assert.Equal(Now.AddMinutes(1), engine.TimerStart(settings, Now.AddMinutes(2)));
+        Assert.Equal(Now.AddMinutes(1).ToUnixTimeMilliseconds(), engine.DesiredActivity(settings, AssetCatalog.LoadDefault(), Now.AddMinutes(2))!.Timestamps!.Start);
+
+        // Same instance (a stats change, a gap in the strip) keeps the run's start.
+        engine.OnPayload(Encoding.UTF8.GetBytes(Fixture.Payload("dungeon").Replace("hp=85", "hp=20", StringComparison.Ordinal)), Now.AddMinutes(3));
+        engine.OnStripMissing(Now.AddMinutes(4));
+        engine.OnStripMissing(Now.AddMinutes(5));
+        engine.OnPayload(dungeon, Now.AddMinutes(6));
+        Assert.Equal(Now.AddMinutes(1), engine.TimerStart(settings, Now.AddMinutes(6)));
+
+        engine.OnPayload(raid, Now.AddMinutes(10));
+        Assert.Equal(Now.AddMinutes(10), engine.TimerStart(settings, Now.AddMinutes(10)));
+
+        engine.OnPayload(World, Now.AddMinutes(20));
+        Assert.Equal(session, engine.TimerStart(settings, Now.AddMinutes(20)));
+    }
+
     [Theory]
     [InlineData(@"C:\Program Files (x86)\World of Warcraft\_forever_\Wow.exe", true)]
     [InlineData(@"D:\Games\World of Warcraft\_forever_ptr_\Wow.exe", true)]

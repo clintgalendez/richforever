@@ -57,6 +57,7 @@ applies. Turn the setting off and the companion makes no network requests unless
 | Hide session time | No elapsed timer |
 | Hide zone and map | Shows "Exploring the world" and generic art |
 | Hide dungeon and raid details | Shows "Inside an instance" and generic art |
+| Clear presence while away | Discord presence is cleared while you are flagged away |
 | Show health, power and XP | Off by default |
 | Show group size / combat | Group size on by default, combat off |
 | Install updates automatically | On by default; off means no network requests of RichForever's own |
