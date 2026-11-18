@@ -31,10 +31,16 @@ public sealed partial class AppSettings
     public bool HideZone { get; set; }
     public bool HideInstance { get; set; }
 
+    /// <summary>Clear the presence while the character is flagged away.</summary>
+    public bool HideWhenAway { get; set; }
+
     // Presence content
     public bool ShowStats { get; set; }
     public bool ShowGroupSize { get; set; } = true;
     public bool ShowCombat { get; set; }
+
+    /// <summary>Inside an instance, time the run instead of the session.</summary>
+    public bool TimeInstanceRuns { get; set; }
     public List<PresenceButton> Buttons { get; set; } = [];
 
     /// <summary>Custom details line with {placeholders}; empty uses the built-in text.</summary>
