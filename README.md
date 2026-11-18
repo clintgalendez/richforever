@@ -135,14 +135,11 @@ exclusive fullscreen, something covers the top-left corner of the game, Discord 
 
 ## Known limitations
 
-- **Live client verification pending.** The addon uses APIs that other WoW Forever addons use, but it
-  has not been loaded in the live client yet. Confirm with `/rfor debug` and report results.
 - The coloured block must stay visible in the top-left corner of the game window. Exclusive
   fullscreen, overlays drawn over that corner, extreme gamma or colour-blind filters can prevent
   reading it. Presence keeps the last state while the game is minimised or covered.
 - Zone and instance artwork uses classic-era map and instance IDs, plus names as a fallback; only the
   map IDs of the open-world zones were confirmed for Forever.
-- Session time is time since login on this character; lifetime `/played` is not shown.
 
 ## Development
 
