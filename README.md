@@ -84,7 +84,8 @@ Full guide: [docs/INSTALLATION.md](docs/INSTALLATION.md). In short:
    - `RichForever-addon-<version>.zip`
    - `RichForever-<version>-win-x64.zip` (or the small `-framework-dependent` one if you have the
      .NET 10 Desktop Runtime)
-2. Extract the addon so you get `World of Warcraft\_forever_\Interface\AddOns\RichForever\RichForever.toc`.
+2. Extract the addon so you get `World of Warcraft\_forever_\Interface\AddOns\RichForever\RichForever.toc`,
+   or install it from [CurseForge](https://www.curseforge.com/wow/addons/richforever) with your addon manager.
 3. Extract the companion anywhere (for example `%LOCALAPPDATA%\Programs\RichForever`) and run
    `RichForever.exe`. Windows SmartScreen may warn because the build is not code-signed yet; choose
    *More info → Run anyway* if you trust the download (verify it with `SHA256SUMS.txt`). Pick a

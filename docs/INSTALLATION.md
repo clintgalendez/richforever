@@ -25,6 +25,9 @@ or with the GitHub CLI: `gh attestation verify RichForever-0.1.0-beta.3-win-x64.
 
 ## 2. Install the addon
 
+The addon is also on [CurseForge](https://www.curseforge.com/wow/addons/richforever): install it
+with the CurseForge app (or another addon manager) and skip to step 3. By hand:
+
 1. Open your WoW Forever folder, usually `C:\Program Files (x86)\World of Warcraft\_forever_`.
 2. Open `Interface\AddOns` (create `AddOns` if it does not exist).
 3. Extract the addon ZIP there. You should end up with

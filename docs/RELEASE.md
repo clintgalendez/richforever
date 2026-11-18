@@ -30,14 +30,24 @@ WoW Forever client and has had user testing.
    framework-dependent companion ZIPs, Discord artwork ZIP, `SHA256SUMS.txt`.
 4. Creates build provenance attestations for the ZIPs with `actions/attest`.
 5. Publishes the GitHub release with the CHANGELOG notes.
+6. Uploads the addon ZIP to [CurseForge](https://www.curseforge.com/wow/addons/richforever) with the
+   same notes. The project comes from the TOC's `## X-Curse-Project-ID`, the game version from its
+   `## Interface` (the matching *WoW Forever* version on CurseForge), and the release type from the tag:
+   `-alpha…` → alpha, any other prerelease → beta, otherwise release. It needs the `CF_API_TOKEN`
+   repository secret (a CurseForge author API token from
+   [legacy.curseforge.com/account/api-tokens](https://legacy.curseforge.com/account/api-tokens)).
+   If this step fails, the GitHub release is already out; fix the cause and re-run the failed job.
+
+When the game's interface number changes, update `## Interface` in the TOC. CurseForge must list a
+WoW Forever game version with that interface, or the upload fails with a clear error.
 
 The asset names are part of the update contract: installed companions look for a `v<semver>` tag
 with `RichForever-<version>-win-x64.zip` or `RichForever-<version>-win-x64-framework-dependent.zip`
 plus `SHA256SUMS.txt`, and expect each ZIP to contain `RichForever.exe` at the top level. Renaming
 them stops existing installs from updating.
 
-Only the final publish job has write permissions (`contents`, `id-token`, `attestations`,
-`artifact-metadata`).
+Only the publish job has write permissions (`contents`, `id-token`, `attestations`,
+`artifact-metadata`). Only the CurseForge job receives the CurseForge token.
 
 ## Verifying a release
 

@@ -5,6 +5,7 @@
 ## Version: 0.1.0-beta.3
 ## X-License: MIT
 ## X-Website: https://github.com/clintgalendez/richforever
+## X-Curse-Project-ID: 1813632
 ## SavedVariables: RichForeverDB
 ## SavedVariablesPerCharacter: RichForeverCharDB
 ## IconTexture: Interface\Icons\INV_Misc_Spyglass_03

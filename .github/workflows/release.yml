@@ -103,3 +103,36 @@ jobs:
           gh release create "$TAG" dist/*.zip dist/SHA256SUMS.txt \
             --repo "$GITHUB_REPOSITORY" --verify-tag --title "RichForever $TAG" \
             --notes-file dist/release-notes.md "${flags[@]}"
+
+  curseforge:
+    name: Publish addon to CurseForge
+    needs: [publish]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: release-assets
+          path: dist
+      - name: Upload addon ZIP
+        env:
+          CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          version="${TAG#v}"
+          zip="dist/RichForever-addon-$version.zip"
+          case "$version" in *-alpha*) type=alpha ;; *-*) type=beta ;; *) type=release ;; esac
+          toc=$(unzip -p "$zip" RichForever/RichForever.toc | tr -d '\r')
+          project=$(sed -n 's/^## X-Curse-Project-ID: *//p' <<< "$toc")
+          interface=$(sed -n 's/^## Interface: *//p' <<< "$toc")
+          [[ -n "$project" && -n "$interface" ]] || { echo "::error::TOC lacks X-Curse-Project-ID or Interface."; exit 1; }
+          # CurseForge game versions of type "WoW Forever" (88568) whose apiVersion is the TOC interface.
+          versions=$(curl -fsS -H "X-Api-Token: $CF_API_TOKEN" https://wow.curseforge.com/api/game/versions |
+            jq -c --arg api "$interface" '[.[] | select(.gameVersionTypeID == 88568 and .apiVersion == $api) | .id]')
+          [[ "$versions" != "[]" ]] || { echo "::error::CurseForge has no WoW Forever version for interface $interface."; exit 1; }
+          metadata=$(jq -n --rawfile changelog dist/release-notes.md --arg name "RichForever $version" \
+            --arg type "$type" --argjson versions "$versions" \
+            '{changelog: $changelog, changelogType: "markdown", displayName: $name, gameVersions: $versions, releaseType: $type}')
+          curl -sS --fail-with-body -H "X-Api-Token: $CF_API_TOKEN" \
+            --form-string "metadata=$metadata" -F "file=@$zip" \
+            "https://wow.curseforge.com/api/projects/$project/upload-file"
