@@ -24,10 +24,10 @@ Inside Stratholme  (3 of 5)
 [Stratholme art]  [Paladin icon]
 ```
 
-> **Project status: beta (0.1.0-beta.3).** The companion, the protocol and the Discord integration are
-> implemented and tested on Windows, and the full pipeline has been run on a real screen against the
-> real Discord client, which displays the presence with the bundled artwork. The addon has **not yet
-> been run inside the live WoW Forever client**; that check is the next milestone. See [Known limitations](#known-limitations).
+> **Project status: stable (1.0.0).** The addon has been verified in the live WoW Forever client
+> ([#19](https://github.com/clintgalendez/richforever/issues/19)), and the companion runs the full
+> pipeline against the real Discord client. The addon is also on
+> [CurseForge](https://www.curseforge.com/wow/addons/richforever). See [Known limitations](#known-limitations).
 
 ## Features
 
@@ -47,8 +47,7 @@ Inside Stratholme  (3 of 5)
 
 ## Screenshots
 
-Planned: the Discord profile card and the companion window will be added once the addon has been
-verified in the live WoW Forever client. Until then, the [artwork](companion/assets/discord) shows
+Planned: the Discord profile card and the companion window. Until then, the [artwork](companion/assets/discord) shows
 what the images on the profile look like: official World of Warcraft art, including WoW Forever's
 own logo and loading screens.
 

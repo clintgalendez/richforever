@@ -18,10 +18,10 @@ From the [latest release](https://github.com/clintgalendez/richforever/releases)
 Optional: verify a download in PowerShell and compare with `SHA256SUMS.txt`:
 
 ```powershell
-Get-FileHash .\RichForever-0.1.0-beta.3-win-x64.zip -Algorithm SHA256
+Get-FileHash .\RichForever-1.0.0-win-x64.zip -Algorithm SHA256
 ```
 
-or with the GitHub CLI: `gh attestation verify RichForever-0.1.0-beta.3-win-x64.zip --repo clintgalendez/richforever`.
+or with the GitHub CLI: `gh attestation verify RichForever-1.0.0-win-x64.zip --repo clintgalendez/richforever`.
 
 ## 2. Install the addon
 

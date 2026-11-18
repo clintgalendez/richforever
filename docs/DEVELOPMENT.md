@@ -103,7 +103,7 @@ emblem and are not generated.
 ## Packaging
 
 ```powershell
-pwsh ./scripts/package.ps1 -Version 0.1.0-beta.3
+pwsh ./scripts/package.ps1 -Version 1.0.0
 ```
 
 writes the release ZIPs and `SHA256SUMS.txt` to `dist/`.

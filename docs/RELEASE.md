@@ -1,10 +1,9 @@
 # Releasing
 
 Releases are built and published by [`.github/workflows/release.yml`](../.github/workflows/release.yml)
-when a `v*` tag is pushed. Versions follow [Semantic Versioning](https://semver.org). Use prerelease
-versions (`0.2.0-beta.1`) until the project is ready for a stable release; anything with a `-` is
-published as a GitHub prerelease. Do not tag `v1.0.0` before the addon has been verified in the live
-WoW Forever client and has had user testing.
+when a `v*` tag is pushed. Versions follow [Semantic Versioning](https://semver.org). Anything with a
+`-` (`1.1.0-beta.1`) is published as a GitHub prerelease and a CurseForge beta (or alpha); installed
+stable companions never update to prereleases.
 
 ## Steps
 
