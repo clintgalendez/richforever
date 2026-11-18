@@ -37,6 +37,14 @@ public sealed partial class AppSettings
     public bool ShowCombat { get; set; }
     public List<PresenceButton> Buttons { get; set; } = [];
 
+    /// <summary>Custom details line with {placeholders}; empty uses the built-in text.</summary>
+    public string DetailsTemplate { get; set; } = "";
+
+    /// <summary>Custom state line with {placeholders}; empty uses the built-in text.</summary>
+    public string StateTemplate { get; set; } = "";
+
+    public const int MaxTemplate = 256;
+
     // Lifecycle
     public bool StartWithWindows { get; set; }
     public DiscordConnectMode DiscordMode { get; set; } = DiscordConnectMode.WhenGameRunning;
@@ -102,6 +110,8 @@ public sealed partial class AppSettings
     public AppSettings Normalize()
     {
         DiscordApplicationId = (DiscordApplicationId ?? "").Trim();
+        DetailsTemplate = Template(DetailsTemplate);
+        StateTemplate = Template(StateTemplate);
         GamePollSeconds = Math.Clamp(GamePollSeconds, 2, 60);
         CaptureIntervalMilliseconds = Math.Clamp(CaptureIntervalMilliseconds, 250, 5000);
         if (!Enum.IsDefined(DiscordMode)) DiscordMode = DiscordConnectMode.WhenGameRunning;
@@ -109,6 +119,12 @@ public sealed partial class AppSettings
         GameProcessNames = (GameProcessNames ?? []).Where(n => n is not null && ProcessNamePattern().IsMatch(n)).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
         if (GameProcessNames.Count == 0) GameProcessNames = ["Wow", "WowB"];
         return this;
+    }
+
+    private static string Template(string? text)
+    {
+        text = string.Concat((text ?? "").Where(c => !char.IsControl(c))).Trim();
+        return text.Length <= MaxTemplate ? text : text[..MaxTemplate];
     }
 
     public static bool IsValidButton(PresenceButton? button) =>

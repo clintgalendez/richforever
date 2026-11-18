@@ -1,9 +1,10 @@
 using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace RichForever.Core;
 
 /// <summary>Turns a game snapshot into the Discord activity, applying privacy settings.</summary>
-public static class PresenceBuilder
+public static partial class PresenceBuilder
 {
     public const int MaxText = 128;
     public const string GameTitle = "World of Warcraft: Forever";
@@ -27,8 +28,8 @@ public static class PresenceBuilder
         var (largeImage, largeText) = Scene(snapshot, settings, catalog);
         return new Activity
         {
-            Details = Fit(CharacterLine(snapshot, settings)),
-            State = Fit(StateLine(snapshot, settings)),
+            Details = Fit(Format(settings.DetailsTemplate, snapshot, settings)) ?? Fit(CharacterLine(snapshot, settings)),
+            State = Fit(Format(settings.StateTemplate, snapshot, settings)) ?? Fit(StateLine(snapshot, settings)),
             Timestamps = timestamps,
             Assets = new ActivityAssets
             {
@@ -78,6 +79,50 @@ public static class PresenceBuilder
         else if (settings.ShowCombat && s.InCombat) verb = "In combat in";
         return $"{verb} {location}";
     }
+
+    /// <summary>
+    /// Fills a user template. Privacy settings blank their values, and separators or brackets left
+    /// around a blank value are tidied away. Unknown placeholders stay as typed so mistakes show.
+    /// </summary>
+    private static string? Format(string template, GameSnapshot s, AppSettings settings)
+    {
+        if (template.Length == 0) return null;
+        var text = Placeholder().Replace(template, m => m.Groups[1].Value switch
+        {
+            "name" => settings.HideCharacterName ? null : s.Name,
+            "level" => s.Level?.ToString(CultureInfo.InvariantCulture),
+            "race" => s.RaceName ?? s.RaceToken,
+            "class" => ClassLabel(s),
+            "faction" => s.Faction,
+            "zone" => settings.HideZone ? null : s.Zone,
+            "subzone" => settings.HideZone ? null : s.SubZone,
+            "instance" => settings.HideInstance ? null : s.InstanceName,
+            "difficulty" => settings.HideInstance ? null : s.Difficulty,
+            "location" => s.Instance == InstanceKind.None ? (settings.HideZone ? null : s.Zone) : (settings.HideInstance ? null : s.InstanceName),
+            "character" => CharacterLine(s, settings),
+            "activity" => StateLine(s, settings),
+            _ => m.Value,
+        } ?? "");
+        text = EmptyBrackets().Replace(text, "");
+        text = RepeatedSeparators().Replace(text, "$1");
+        text = Whitespace().Replace(text, " ");
+        return EdgeSeparators().Replace(text, "");
+    }
+
+    [GeneratedRegex(@"\{([a-z]+)\}")]
+    private static partial Regex Placeholder();
+
+    [GeneratedRegex(@"\(\s*\)|\[\s*\]|<\s*>")]
+    private static partial Regex EmptyBrackets();
+
+    [GeneratedRegex(@"(\s*[·•|,/-])(?:\s*[·•|,/-])+")]
+    private static partial Regex RepeatedSeparators();
+
+    [GeneratedRegex(@"\s+")]
+    private static partial Regex Whitespace();
+
+    [GeneratedRegex(@"^[\s·•|,/:-]+|[\s·•|,/:-]+$")]
+    private static partial Regex EdgeSeparators();
 
     private static (string? Image, string? Text) Scene(GameSnapshot s, AppSettings settings, AssetCatalog catalog)
     {

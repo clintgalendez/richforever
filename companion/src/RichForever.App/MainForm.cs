@@ -12,6 +12,7 @@ internal sealed class MainForm : Form
     private readonly CompanionController _controller;
     private readonly Label _game = Value(), _discord = Value(), _character = Value(), _presence = Value(), _error = Value(), _performance = Value(), _update = Value();
     private readonly TextBox _applicationId = new() { Width = 220, PlaceholderText = "RichForever (default)" };
+    private readonly TextBox _detailsTemplate = Template("Default: {character}"), _stateTemplate = Template("Default: {activity}");
     private readonly CheckBox _pause = Check("Pause presence"), _hideName = Check("Hide character name"), _hideTime = Check("Hide session time"),
         _hideZone = Check("Hide zone and map"), _hideInstance = Check("Hide dungeon and raid details"), _stats = Check("Show health, power and XP (also enable in the addon)"),
         _group = Check("Show group size"), _combat = Check("Show when in combat"), _startup = Check("Start RichForever when Windows starts"),
@@ -53,6 +54,13 @@ internal sealed class MainForm : Form
         AddRow(settings, "Discord app", idRow);
         AddRow(settings, "Privacy", Stack(_pause, _hideName, _hideTime, _hideZone, _hideInstance));
         AddRow(settings, "Show", Stack(_stats, _group, _combat));
+        AddRow(settings, "Text", Stack(_detailsTemplate, _stateTemplate, new Label
+        {
+            AutoSize = true,
+            MaximumSize = new Size(520, 0),
+            Text = "Your own wording for the two presence lines. Placeholders: {name} {level} {race} {class} {faction} {zone} {subzone} " +
+                "{location} {instance} {difficulty}, and {character} {activity} for the default lines. Leave empty for the default.",
+        }));
         AddRow(settings, "Startup", Stack(_startup, _whenGame, _always, _exit));
         AddRow(settings, "Updates", Stack(_autoUpdate));
 
@@ -93,6 +101,8 @@ internal sealed class MainForm : Form
     private void LoadSettings(AppSettings s)
     {
         _applicationId.Text = s.DiscordApplicationId;
+        _detailsTemplate.Text = s.DetailsTemplate;
+        _stateTemplate.Text = s.StateTemplate;
         _pause.Checked = s.PausePresence;
         _hideName.Checked = s.HideCharacterName;
         _hideTime.Checked = s.HideSessionTime;
@@ -118,6 +128,8 @@ internal sealed class MainForm : Form
                 "RichForever", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             return;
         }
+        s.DetailsTemplate = _detailsTemplate.Text;
+        s.StateTemplate = _stateTemplate.Text;
         s.PausePresence = _pause.Checked;
         s.HideCharacterName = _hideName.Checked;
         s.HideSessionTime = _hideTime.Checked;
@@ -167,6 +179,8 @@ internal sealed class MainForm : Form
     }
 
     private static Label Value() => new() { AutoSize = true, MaximumSize = new Size(520, 0), Margin = new Padding(3, 3, 3, 6) };
+
+    private static TextBox Template(string hint) => new() { Width = 420, PlaceholderText = hint, MaxLength = AppSettings.MaxTemplate, Margin = new Padding(0, 0, 0, 4) };
 
     private static CheckBox Check(string text) => new() { Text = text, AutoSize = true, Margin = new Padding(0, 0, 0, 2) };
 
