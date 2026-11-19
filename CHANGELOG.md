@@ -6,6 +6,8 @@ All notable changes are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-11-19
+
 ### Added
 
 - Custom presence text (#42): the window's *Text* row replaces the details and state lines with your
@@ -96,7 +98,8 @@ client; the addon still needs verification in the live WoW Forever client.
   review), CodeQL, Dependabot, and a tag-driven release workflow with checksums and provenance
   attestations.
 
-[Unreleased]: https://github.com/clintgalendez/richforever/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/clintgalendez/richforever/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/clintgalendez/richforever/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/clintgalendez/richforever/compare/v0.1.0-beta.3...v1.0.0
 [0.1.0-beta.3]: https://github.com/clintgalendez/richforever/compare/v0.1.0-beta.2...v0.1.0-beta.3
 [0.1.0-beta.2]: https://github.com/clintgalendez/richforever/compare/v0.1.0-beta.1...v0.1.0-beta.2

@@ -2,7 +2,7 @@
 ## Title: RichForever
 ## Notes: Discord Rich Presence for World of Warcraft: Forever (requires the RichForever companion app).
 ## Author: Clint Galendez
-## Version: 1.0.0
+## Version: 1.1.0
 ## X-License: MIT
 ## X-Website: https://github.com/clintgalendez/richforever
 ## X-Curse-Project-ID: 1813632
